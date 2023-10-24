@@ -1,6 +1,12 @@
 # About
 
 (isikan nim dan nama anggota kelompok, nama aplikasi serta deskripsi aplikasinya)
+Anggota Kelompok:
+- 2141720245 - Arsyanda Irza R. Y.
+- 2141720133 - Brian Mohamad Safiudin
+- 2141720059 - Febryan Rizki Hidayatullah
+- 2141720242 - Iddam Anbiya Haqi
+- 2141720140 - M. Rizky Mafazan
 
 (tampilkan berupa gif jika app sudah selesai)
 
@@ -15,12 +21,12 @@ dst
 
 # Link Figma
 
-(cantumkan linknya di sini dan screenshot per screen)
+https://www.figma.com/file/blbgqQgC926tgbXdsh6hYr/Flutter-Kelompok-6?type=design&node-id=0%3A1&mode=design&t=1xgsN1LuyXtmcbYU-1
 
 
 # Fitur Unggulan
 
-(jika ada)
+(belum ada)
 
 
 # Credits
