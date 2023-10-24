@@ -1,7 +1,7 @@
 # About
 
 (isikan nim dan nama anggota kelompok, nama aplikasi serta deskripsi aplikasinya)
-Anggota Kelompok:
+- Anggota Kelompok:
 - 2141720245 - Arsyanda Irza R. Y.
 - 2141720133 - Brian Mohamad Safiudin
 - 2141720059 - Febryan Rizki Hidayatullah
