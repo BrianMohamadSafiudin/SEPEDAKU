@@ -1,11 +1,14 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
 import 'package:sepedaku/components/background.dart';
+import 'package:sepedaku/components/lang/language.provider.dart';
 import 'package:sepedaku/screens/welcome/welcome_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+      create: (context) => LanguageProvider(), child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -16,7 +19,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return MaterialApp(
-        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        title: 'SEPEDAKU',
         theme: ThemeData(),
         home: Background(
           child: AnimatedSplashScreen(

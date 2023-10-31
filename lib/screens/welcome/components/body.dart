@@ -1,12 +1,22 @@
+import 'package:provider/provider.dart';
 import 'package:sepedaku/components/background.dart';
+import 'package:sepedaku/components/lang/language.provider.dart';
 import 'package:sepedaku/screens/login/login_screen.dart';
 import 'package:sepedaku/components/rounded_button.dart';
 import 'package:sepedaku/screens/register/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sepedaku/components/lang/language_translations.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
   const Body({super.key});
+
+  @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  String selectedLanguage = 'en'; // Bahasa default
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +25,38 @@ class Body extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
+          Container(
+            alignment: Alignment.topRight,
+            child: DropdownButton<String>(
+              underline: Container(height: 0),
+              dropdownColor: Color(0xffEAEEFF),
+              elevation: 0,
+              icon: Icon(null),
+              value: selectedLanguage,
+              items: <String>['en', 'id'].map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Image.asset(
+                      value == 'en'
+                          ? 'assets/images/inggris.png'
+                          : 'assets/images/indonesia.png',
+                      width: 40,
+                      height: 40,
+                    ),
+                  ),
+                );
+              }).toList(),
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedLanguage = newValue!;
+                  Provider.of<LanguageProvider>(context, listen: false)
+                    .changeLanguage(selectedLanguage);
+                });
+              },
+            ),
+          ),
           SizedBox(
             height: 23,
           ),
@@ -27,7 +69,7 @@ class Body extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'MotoRental Malang City',
+                  getTranslatedValue('title'),
                   style: GoogleFonts.poppins(
                       fontSize: 35,
                       fontWeight: FontWeight.w600,
@@ -38,7 +80,7 @@ class Body extends StatelessWidget {
                   height: 23,
                 ),
                 Text(
-                  'innovative motorcycle rental application designed to make your travels effortless',
+                  getTranslatedValue('subtitle'),
                   style: GoogleFonts.poppins(fontSize: 14),
                   textAlign: TextAlign.center,
                 ),
@@ -52,7 +94,7 @@ class Body extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               RoundedButton(
-                text: "Login",
+                text: getTranslatedValue('login'),
                 press: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return LoginScreen();
@@ -64,7 +106,7 @@ class Body extends StatelessWidget {
                 width: 329,
               ),
               RoundedButton(
-                text: "Register",
+                text: getTranslatedValue('register'),
                 press: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return RegisterScreen();
@@ -83,5 +125,9 @@ class Body extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String getTranslatedValue(String key) {
+    return languages[selectedLanguage]![key] ?? 'Translation not found';
   }
 }
