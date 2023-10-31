@@ -8,7 +8,7 @@
 - 2141720242 - Iddam Anbiya Haqi
 - 2141720140 - M. Rizky Mafazan
 
-(tampilkan berupa gif jika app sudah selesai)testing
+(tampilkan berupa gif jika app sudah selesai)testings
 
 # Screen dan PIC
 
