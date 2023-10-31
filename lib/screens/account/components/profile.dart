@@ -11,56 +11,53 @@ class EditProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Column(
+        body: BackgroundAccount(
+      child: ListView(
         children: [
-          Stack(
-            children: [BackgroundAccount(), HeaderProfileAccount()],
-          ),
+          HeaderProfileAccount(),
           Container(
             height: size.height * 0.55,
             margin: EdgeInsets.symmetric(horizontal: 16),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  FormAccount(
-                    title: 'Username',
-                    obscureText: false,
-                    controller: TextEditingController(text: 'Edward'),
-                    keyboardType: TextInputType.text,
-                  ),
-                  FormAccount(
-                    title: 'Email',
-                    obscureText: false,
-                    controller: TextEditingController(text: 'edward@gmail.com'),
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  FormAccount(
-                    title: 'Password',
-                    obscureText: true,
-                    controller: TextEditingController(text: 'Marinus24'),
-                    keyboardType: TextInputType.visiblePassword,
-                  ),
-                  FormAccount(
-                    title: 'Confirm Password',
-                    controller: TextEditingController(text: 'Marinus24'),
-                    obscureText: true,
-                    keyboardType: TextInputType.visiblePassword,
-                  ),
-                  RoundedButton(
-                      text: 'Update',
-                      press: () {},
-                      color: primaryColor,
-                      textColor: Colors.white,
-                      height: 40,
-                      width: 283),
-                ],
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                FormAccount(
+                  title: 'Username',
+                  obscureText: false,
+                  controller: TextEditingController(text: 'Edward'),
+                  keyboardType: TextInputType.text,
+                ),
+                FormAccount(
+                  title: 'Email',
+                  obscureText: false,
+                  controller: TextEditingController(text: 'edward@gmail.com'),
+                  keyboardType: TextInputType.emailAddress,
+                ),
+                FormAccount(
+                  title: 'Password',
+                  obscureText: true,
+                  controller: TextEditingController(text: 'Marinus24'),
+                  keyboardType: TextInputType.visiblePassword,
+                ),
+                FormAccount(
+                  title: 'Confirm Password',
+                  controller: TextEditingController(text: 'Marinus24'),
+                  obscureText: true,
+                  keyboardType: TextInputType.visiblePassword,
+                ),
+                RoundedButton(
+                    text: 'Update',
+                    press: () {},
+                    color: primaryColor,
+                    textColor: Colors.white,
+                    height: 40,
+                    width: 283),
+              ],
             ),
           ),
         ],
       ),
-    );
+    ));
   }
 }
 
@@ -73,7 +70,7 @@ class HeaderProfileAccount extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      margin: EdgeInsets.only(top: 45),
+      margin: EdgeInsets.only(top: 25),
       height: size.height * 0.38,
       child: Center(
         child: Column(

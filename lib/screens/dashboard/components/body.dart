@@ -89,7 +89,7 @@ class _BodyState extends State<Body> {
                   SizedBox(height: 11),
                   Container(
                       height: 230,
-                      width: 343,
+                      width: size.width,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(13),
                           color: Colors.white),

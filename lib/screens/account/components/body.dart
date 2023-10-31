@@ -14,11 +14,10 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Column(
+    return BackgroundAccount(
+        child: Column(
       children: [
-        Stack(
-          children: [BackgroundAccount(), HeaderBodyAccount()],
-        ),
+        HeaderBodyAccount(),
         SizedBox(height: size.height * 0.05),
         Container(
           height: size.height * 0.5,
@@ -26,7 +25,7 @@ class Body extends StatelessWidget {
           child: MenuAccount(),
         ),
       ],
-    );
+    ));
   }
 }
 
@@ -78,8 +77,7 @@ class MenuAccount extends StatelessWidget {
         RoundedButton(
             text: 'Logout',
             press: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return LoginScreen();
               }));
             },
