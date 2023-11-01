@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sepedaku/screens/auth.dart';
 import 'package:easy_localization/easy_localization.dart';
+
 import 'package:sepedaku/components/backgroundAccount.dart';
 import 'package:sepedaku/components/color.dart';
 import 'package:sepedaku/components/locale/locale_keys.g.dart';
@@ -11,7 +14,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Body extends StatelessWidget {
-  const Body({super.key});
+  Body({Key? key}) : super(key: key);
+
+  final User? user = Auth().currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +37,13 @@ class Body extends StatelessWidget {
 }
 
 class MenuAccount extends StatelessWidget {
-  const MenuAccount({
-    super.key,
-  });
+  MenuAccount({Key? key}) : super(key: key);
+
+  final User? user = Auth().currentUser;
+
+  Future<void> signOut() async {
+    await Auth().signOut();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,11 +87,7 @@ class MenuAccount extends StatelessWidget {
         Spacer(),
         RoundedButton(
             text: LocaleKeys.logout,
-            press: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return LoginScreen();
-              }));
-            },
+            press: signOut, 
             color: Color(0xffff0000),
             textColor: Colors.white,
             height: 40,
