@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:sepedaku/components/backgroundAccount.dart';
 import 'package:sepedaku/components/color.dart';
+import 'package:sepedaku/components/locale/locale_keys.g.dart';
 import 'package:sepedaku/components/rounded_button.dart';
 import 'package:sepedaku/screens/account/components/profile.dart';
 import 'package:sepedaku/screens/account/components/saveScan.dart';
@@ -47,7 +49,7 @@ class MenuAccount extends StatelessWidget {
                 ));
           },
           icon: Icons.person,
-          title: 'Edit Profile',
+          title: LocaleKeys.editProfile,
         ),
         SizedBox(height: 16),
         ButtonAccount(
@@ -59,7 +61,7 @@ class MenuAccount extends StatelessWidget {
                 ));
           },
           icon: Icons.qr_code_scanner,
-          title: 'Scan SIM',
+          title: LocaleKeys.scanSIM,
         ),
         SizedBox(height: 16),
         ButtonAccount(
@@ -71,11 +73,11 @@ class MenuAccount extends StatelessWidget {
                 ));
           },
           icon: Icons.save,
-          title: 'SIM Saved',
+          title: LocaleKeys.simSaved,
         ),
         Spacer(),
         RoundedButton(
-            text: 'Logout',
+            text: LocaleKeys.logout,
             press: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return LoginScreen();
@@ -106,9 +108,9 @@ class HeaderBodyAccount extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Account",
+              LocaleKeys.account,
               style: GoogleFonts.poppins(fontSize: 22, color: Colors.white),
-            ),
+            ).tr(),
             Container(
               height: 134,
               width: 134,
@@ -155,7 +157,7 @@ class ButtonAccount extends StatelessWidget {
             Text(
               title,
               style: GoogleFonts.poppins(fontSize: 18),
-            )
+            ).tr()
           ],
         ));
   }

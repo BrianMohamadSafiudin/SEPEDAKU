@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:sepedaku/components/color.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sepedaku/components/locale/locale_keys.g.dart';
 
 class ViewItemScreen extends StatelessWidget {
   const ViewItemScreen({super.key});
@@ -42,7 +44,12 @@ class ViewItemScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text('Ordered by Edward Sunan Hutabarat'),
+                      Row(
+                        children: [
+                          Text(LocaleKeys.orderby).tr(),
+                          Text(' Edward Sunan Hutabarat'),
+                        ],
+                      ),
                       Text(
                         'Rp. 250.000',
                         style: TextStyle(fontSize: 18),

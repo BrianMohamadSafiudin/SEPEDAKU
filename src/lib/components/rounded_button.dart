@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -24,7 +25,7 @@ class RoundedButton extends StatelessWidget {
         text,
         style: GoogleFonts.poppins(
             color: textColor, fontWeight: FontWeight.w600, fontSize: 20),
-      ),
+      ).tr(),
       style: ElevatedButton.styleFrom(
           fixedSize: Size(width, height),
           backgroundColor: color,

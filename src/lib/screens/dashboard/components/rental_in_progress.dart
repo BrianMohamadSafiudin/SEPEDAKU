@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:sepedaku/components/card_inHome.dart';
+import 'package:sepedaku/components/locale/locale_keys.g.dart';
 // import 'package:cobaprojek_ocr/components/color.dart';
 import 'package:sepedaku/screens/dashboard/components/view_item.dart';
 import 'package:flutter/material.dart';
@@ -21,11 +23,11 @@ class RentalInProgress extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Text(
-            'Rent in progress',
+            LocaleKeys.rentinprogress,
             style:
                 GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.bold),
             textAlign: TextAlign.left,
-          ),
+          ).tr(),
         ),
         Container(
           height: size.height * 0.32,

@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:sepedaku/components/background.dart';
 import 'package:sepedaku/components/button_loginGoogle.dart';
 import 'package:sepedaku/components/header_loginRegister.dart';
+import 'package:sepedaku/components/locale/locale_keys.g.dart';
 import 'package:sepedaku/screens/login/login_screen.dart';
 import 'package:sepedaku/screens/register/components/form.dart';
 import 'package:flutter/material.dart';
@@ -18,16 +20,17 @@ class Body extends StatelessWidget {
           Container(
               margin: EdgeInsets.symmetric(vertical: 29),
               child: Header_LoginRegister(
-                  judul: "Register", subJudul: "Create Account!")),
+                  judul: LocaleKeys.titleRegister,
+                  subJudul: LocaleKeys.subtitleRegister)),
           FormRegister(),
           SizedBox(height: 12),
           Column(
             children: [
               Text(
-                "Or",
+                LocaleKeys.or,
                 style: GoogleFonts.poppins(
                     fontSize: 14, fontWeight: FontWeight.w600),
-              ),
+              ).tr(),
               SizedBox(height: 12),
               ButtonLoginGoogle()
             ],
@@ -37,10 +40,10 @@ class Body extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Already have an account? ",
+                LocaleKeys.alreadyhaveaccount,
                 style: GoogleFonts.poppins(
                     fontSize: 14, fontWeight: FontWeight.w600),
-              ),
+              ).tr(),
               TextButton(
                   onPressed: () {
                     Navigator.push(context,
@@ -49,13 +52,13 @@ class Body extends StatelessWidget {
                     }));
                   },
                   child: Text(
-                    "Sign in",
+                    LocaleKeys.signin,
                     style: GoogleFonts.poppins(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: Color(0xff1F41BB),
                         decoration: TextDecoration.underline),
-                  ))
+                  ).tr())
             ],
           ),
         ],

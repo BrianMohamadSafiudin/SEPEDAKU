@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:sepedaku/components/color.dart';
+import 'package:sepedaku/components/locale/locale_keys.g.dart';
 import 'package:sepedaku/components/rounded_button.dart';
 import 'package:sepedaku/screens/account/components/saveScan.dart';
 import 'package:flutter/material.dart';
@@ -29,43 +31,45 @@ class DetailScanScreen extends StatelessWidget {
                     Container(
                       height: size.height * 0.1,
                       child: ChildInForm(
-                          title: 'Driver License', textController: 'C'),
+                          title: LocaleKeys.licenseDriver, textController: 'C'),
                     ),
                     Container(
                       height: size.height * 0.1,
                       child: ChildInForm(
-                          title: 'Driver License Number',
+                          title: LocaleKeys.numberSIM,
                           textController: '1002-9108-2828'),
                     ),
                     Container(
                       height: size.height * 0.1,
-                      child:
-                          ChildInForm(title: 'Name', textController: 'Edward'),
+                      child: ChildInForm(
+                          title: LocaleKeys.name, textController: 'Edward'),
                     ),
                     Container(
                       height: size.height * 0.1,
                       child: ChildInForm(
-                          title: 'Birth', textController: 'Batam, 30-08-1999'),
-                    ),
-                    Container(
-                      height: size.height * 0.1,
-                      child:
-                          ChildInForm(title: 'Gender', textController: 'Pria'),
+                          title: LocaleKeys.birth,
+                          textController: 'Batam, 30-08-1999'),
                     ),
                     Container(
                       height: size.height * 0.1,
                       child: ChildInForm(
-                          title: 'Address', textController: 'Kampung Seraya'),
+                          title: LocaleKeys.gender, textController: 'Pria'),
                     ),
                     Container(
                       height: size.height * 0.1,
                       child: ChildInForm(
-                          title: 'Job', textController: 'Wiraswasta'),
+                          title: LocaleKeys.address,
+                          textController: 'Kampung Seraya'),
                     ),
                     Container(
                       height: size.height * 0.1,
                       child: ChildInForm(
-                          title: 'Driver License Period',
+                          title: LocaleKeys.job, textController: 'Wiraswasta'),
+                    ),
+                    Container(
+                      height: size.height * 0.1,
+                      child: ChildInForm(
+                          title: LocaleKeys.driverLicensePeriod,
                           textController: '12-06-2028'),
                     ),
                   ],
@@ -81,7 +85,7 @@ class DetailScanScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               RoundedButton(
-                  text: '<< Back',
+                  text: LocaleKeys.back,
                   press: () {
                     Navigator.pop(context);
                   },
@@ -90,7 +94,7 @@ class DetailScanScreen extends StatelessWidget {
                   height: 45,
                   width: 141),
               RoundedButton(
-                  text: 'Save >>',
+                  text: LocaleKeys.save,
                   press: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
@@ -123,7 +127,7 @@ class ChildInForm extends StatelessWidget {
         Text(
           title,
           style: GoogleFonts.poppins(),
-        ),
+        ).tr(),
         TextFormField(
           controller: TextEditingController(text: textController),
           readOnly: true,
