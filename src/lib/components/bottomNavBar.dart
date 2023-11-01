@@ -1,4 +1,5 @@
 import 'package:sepedaku/components/button_bottomAppBaR.dart';
+import 'package:sepedaku/components/locale/locale_keys.g.dart';
 import 'package:sepedaku/screens/account/account_screen.dart';
 import 'package:sepedaku/screens/dashboard/dashboard_screen.dart';
 import 'package:sepedaku/screens/transactions/transaction_screen.dart';
@@ -37,7 +38,7 @@ class BottomNavBar extends StatelessWidget {
                 }));
               },
               icon: Icons.list_alt,
-              title: 'Transactions',
+              title: LocaleKeys.transactions,
               isActive: currentIndex == 1,
             ),
             ButtonBottomAppBar(
@@ -47,7 +48,7 @@ class BottomNavBar extends StatelessWidget {
                 }));
               },
               icon: Icons.person,
-              title: 'Account',
+              title: LocaleKeys.account,
               isActive: currentIndex == 2,
             ),
           ],

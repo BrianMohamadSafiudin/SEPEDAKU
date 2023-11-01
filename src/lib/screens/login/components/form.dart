@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sepedaku/screens/auth.dart';
+import 'package:easy_localization/easy_localization.dart';
+
 import 'package:sepedaku/components/form_inputEemail.dart';
 import 'package:sepedaku/components/form_inputPassword.dart';
+import 'package:sepedaku/components/locale/locale_keys.g.dart';
 import 'package:sepedaku/components/rounded_button.dart';
 import 'package:sepedaku/screens/dashboard/dashboard_screen.dart';
 import 'package:flutter/material.dart';
@@ -98,13 +101,18 @@ class _FormLoginState extends State<FormLogin> {
               child: TextButton(
                 onPressed: () {},
                 child: Text(
-                  "Forgot your password?",
+                    LocaleKeys.forgotPassword,
+                    style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        color: Color(0xff1F41BB),
+                        fontWeight: FontWeight.w600),
+                  ).tr()),
                 ),
               ),
             ),
             Spacer(),
             RoundedButton(
-              text: "Sign In",
+              text: LocaleKeys.signin,
               press: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return DashboardScreen();

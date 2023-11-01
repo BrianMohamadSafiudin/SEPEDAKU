@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:sepedaku/components/color.dart';
+import 'package:sepedaku/components/locale/locale_keys.g.dart';
 import 'package:sepedaku/screens/account/account_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,9 +22,9 @@ class SaveScanScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back),
         ),
         title: Text(
-          'SIM Saved',
+          LocaleKeys.simSaved,
           style: GoogleFonts.poppins(fontSize: 20),
-        ),
+        ).tr(),
         backgroundColor: primaryColor,
       ),
       body: SingleChildScrollView(

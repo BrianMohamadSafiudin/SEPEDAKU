@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:sepedaku/components/color.dart';
+import 'package:sepedaku/components/locale/locale_keys.g.dart';
 import 'package:sepedaku/screens/transactions/components/rentalNow.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -87,9 +89,9 @@ class ViewItemScreen extends StatelessWidget {
               Icon(Icons.motorcycle),
               SizedBox(width: 12),
               Text(
-                'Rental Now',
+                LocaleKeys.rentalNow,
                 style: GoogleFonts.poppins(fontSize: 18),
-              ),
+              ).tr(),
               SizedBox(width: 12),
               Icon(Icons.motorcycle),
             ],

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -21,14 +22,14 @@ class Header_LoginRegister extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 color: Color(0xff1F41BB)),
             textAlign: TextAlign.center,
-          ),
+          ).tr(),
           SizedBox(height: 26),
           Text(
             subJudul,
             style:
                 GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w600),
             textAlign: TextAlign.center,
-          )
+          ).tr()
         ],
       ),
     );

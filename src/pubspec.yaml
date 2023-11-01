@@ -39,11 +39,11 @@ dependencies:
   animated_splash_screen: ^1.3.0
   page_transition: ^2.1.0
   flutter_svg: ^2.0.7
-  provider: ^6.0.5
   firebase_auth: ^3.5.0
   firebase_core: ^1.10.0
   # firebase_core_platform_interface: 4.5.1
   # firebase_messaging: ^13.0.4 # will satisfy your firebase core things that depend on ^4.5.1
+  easy_localization: ^3.0.3
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +72,7 @@ flutter:
     - assets/images/
     - assets/images/slideshow/
     - assets/icons/
+    - assets/translations/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
