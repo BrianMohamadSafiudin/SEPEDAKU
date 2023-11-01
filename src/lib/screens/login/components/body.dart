@@ -1,29 +1,15 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:sepedaku/components/background.dart';
 import 'package:sepedaku/components/button_loginGoogle.dart';
 import 'package:sepedaku/components/header_loginRegister.dart';
-import 'package:sepedaku/components/lang/language_translations.dart';
+import 'package:sepedaku/components/locale/locale_keys.g.dart';
 import 'package:sepedaku/screens/login/components/form.dart';
 import 'package:sepedaku/screens/register/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Body extends StatefulWidget {
-  final String selectedLanguage;
-
-  const Body({Key? key, required this.selectedLanguage}) : super(key: key);
-
-  @override
-  State<Body> createState() => _BodyState();
-}
-
-class _BodyState extends State<Body> {
-  late String selectedLanguage;
-
-  @override
-  void initState() {
-    super.initState();
-    selectedLanguage = widget.selectedLanguage;
-  }
+class Body extends StatelessWidget {
+  const Body({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,17 +20,17 @@ class _BodyState extends State<Body> {
         Container(
             margin: EdgeInsets.symmetric(vertical: 29),
             child: Header_LoginRegister(
-                judul: getTranslatedValue('titleLogin'),
-                subJudul: getTranslatedValue('subtitleLogin'))),
+                judul: LocaleKeys.titleLogin,
+                subJudul: LocaleKeys.subtitleLogin)),
         FormLogin(),
         SizedBox(height: 12),
         Column(
           children: [
             Text(
-              getTranslatedValue('or'),
+              LocaleKeys.or,
               style: GoogleFonts.poppins(
                   fontSize: 14, fontWeight: FontWeight.w600),
-            ),
+            ).tr(),
             SizedBox(height: 12),
             ButtonLoginGoogle()
           ],
@@ -54,33 +40,30 @@ class _BodyState extends State<Body> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              getTranslatedValue('dont have account'),
+              LocaleKeys.donthaveaccount,
               style: GoogleFonts.poppins(
                   fontSize: 14, fontWeight: FontWeight.w600),
-            ),
+            ).tr(),
             TextButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(
-                    builder: (context) {
-                      return RegisterScreen();
-                    },
-                  ));
-                },
-                child: Text(
-                  getTranslatedValue('signup'),
-                  style: GoogleFonts.poppins(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xff1F41BB),
-                      decoration: TextDecoration.underline),
-                ))
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return RegisterScreen();
+                  },
+                ));
+              },
+              child: Text(
+                LocaleKeys.signup,
+                style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xff1F41BB),
+                    decoration: TextDecoration.underline),
+              ).tr(),
+            )
           ],
         )
       ],
     ));
-  }
-
-  String getTranslatedValue(String key) {
-    return languages[selectedLanguage]![key] ?? 'Translation not found';
   }
 }

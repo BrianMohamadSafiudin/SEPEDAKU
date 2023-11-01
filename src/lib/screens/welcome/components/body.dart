@@ -1,12 +1,11 @@
-import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:sepedaku/components/background.dart';
-import 'package:sepedaku/components/lang/language.provider.dart';
+import 'package:sepedaku/components/locale/locale_keys.g.dart';
 import 'package:sepedaku/screens/login/login_screen.dart';
 import 'package:sepedaku/components/rounded_button.dart';
 import 'package:sepedaku/screens/register/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sepedaku/components/lang/language_translations.dart';
 
 class Body extends StatefulWidget {
   const Body({super.key});
@@ -16,8 +15,7 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  String selectedLanguage = 'en'; // Bahasa default
-
+  String selectedLanguage = 'en';
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -51,8 +49,7 @@ class _BodyState extends State<Body> {
               onChanged: (String? newValue) {
                 setState(() {
                   selectedLanguage = newValue!;
-                  Provider.of<LanguageProvider>(context, listen: false)
-                    .changeLanguage(selectedLanguage);
+                  context.setLocale(Locale(selectedLanguage));
                 });
               },
             ),
@@ -69,21 +66,21 @@ class _BodyState extends State<Body> {
             child: Column(
               children: [
                 Text(
-                  getTranslatedValue('title'),
+                  LocaleKeys.title,
                   style: GoogleFonts.poppins(
                       fontSize: 35,
                       fontWeight: FontWeight.w600,
                       color: Color(0xff1F41BB)),
                   textAlign: TextAlign.center,
-                ),
+                ).tr(),
                 SizedBox(
                   height: 23,
                 ),
                 Text(
-                  getTranslatedValue('subtitle'),
+                  LocaleKeys.subtitle,
                   style: GoogleFonts.poppins(fontSize: 14),
                   textAlign: TextAlign.center,
-                ),
+                ).tr(),
               ],
             ),
           ),
@@ -94,7 +91,7 @@ class _BodyState extends State<Body> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               RoundedButton(
-                text: getTranslatedValue('login'),
+                text: LocaleKeys.login,
                 press: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return LoginScreen();
@@ -106,7 +103,7 @@ class _BodyState extends State<Body> {
                 width: 329,
               ),
               RoundedButton(
-                text: getTranslatedValue('register'),
+                text: LocaleKeys.register,
                 press: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return RegisterScreen();
@@ -125,9 +122,5 @@ class _BodyState extends State<Body> {
         ],
       ),
     );
-  }
-
-  String getTranslatedValue(String key) {
-    return languages[selectedLanguage]![key] ?? 'Translation not found';
   }
 }

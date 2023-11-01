@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:sepedaku/components/color.dart';
+import 'package:sepedaku/components/locale/locale_keys.g.dart';
 import 'package:sepedaku/screens/dashboard/components/rental_in_progress.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -73,12 +75,12 @@ class _BodyState extends State<Body> {
                 children: [
                   SizedBox(height: 43),
                   Text(
-                    'Welcome,',
+                    LocaleKeys.welcome,
                     style: GoogleFonts.poppins(
                         fontSize: 20,
                         color: Colors.white,
                         fontWeight: FontWeight.w200),
-                  ),
+                  ).tr(),
                   Text(
                     'Edward!',
                     style: GoogleFonts.poppins(

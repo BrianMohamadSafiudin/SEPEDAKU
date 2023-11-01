@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:sepedaku/components/color.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,7 +29,7 @@ class ButtonBottomAppBar extends StatelessWidget {
           Text(
             title,
             style: GoogleFonts.poppins(color: isActive ? primaryColor : Colors.grey, fontSize: 11),
-          )
+          ).tr()
         ],
       ),
       style:

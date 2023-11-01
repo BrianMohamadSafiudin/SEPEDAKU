@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:sepedaku/components/backgroundAccount.dart';
 import 'package:sepedaku/components/color.dart';
+import 'package:sepedaku/components/locale/locale_keys.g.dart';
 import 'package:sepedaku/components/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,7 +24,7 @@ class EditProfileScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 FormAccount(
-                  title: 'Username',
+                  title: LocaleKeys.username,
                   obscureText: false,
                   controller: TextEditingController(text: 'Edward'),
                   keyboardType: TextInputType.text,
@@ -40,13 +42,13 @@ class EditProfileScreen extends StatelessWidget {
                   keyboardType: TextInputType.visiblePassword,
                 ),
                 FormAccount(
-                  title: 'Confirm Password',
+                  title: LocaleKeys.confirmPassword,
                   controller: TextEditingController(text: 'Marinus24'),
                   obscureText: true,
                   keyboardType: TextInputType.visiblePassword,
                 ),
                 RoundedButton(
-                    text: 'Update',
+                    text: LocaleKeys.update,
                     press: () {},
                     color: primaryColor,
                     textColor: Colors.white,
@@ -87,9 +89,9 @@ class HeaderProfileAccount extends StatelessWidget {
                       color: Colors.white,
                     )),
                 Text(
-                  "Edit Profile",
+                  LocaleKeys.editProfile,
                   style: GoogleFonts.poppins(fontSize: 22, color: Colors.white),
-                ),
+                ).tr(),
               ],
             ),
             Expanded(
@@ -112,10 +114,10 @@ class HeaderProfileAccount extends StatelessWidget {
                   TextButton(
                     onPressed: () {},
                     child: Text(
-                      'Change Picture',
+                      LocaleKeys.changePicture,
                       style: GoogleFonts.poppins(
                           color: Colors.black, fontWeight: FontWeight.w400),
-                    ),
+                    ).tr(),
                   )
                 ],
               ),
@@ -151,7 +153,7 @@ class FormAccount extends StatelessWidget {
             title,
             style:
                 GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500),
-          ),
+          ).tr(),
           TextFormField(
             obscureText: obscureText,
             controller: controller,

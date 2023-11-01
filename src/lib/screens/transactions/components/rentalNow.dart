@@ -1,4 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:sepedaku/components/color.dart';
+import 'package:sepedaku/components/locale/locale_keys.g.dart';
+import 'package:sepedaku/screens/account/components/saveScan.dart';
 import 'package:sepedaku/screens/dashboard/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -74,10 +77,10 @@ class RentalNowScreen extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 12),
                     child: Text(
-                      'Choose your SIM',
+                      LocaleKeys.chooseSim,
                       style: GoogleFonts.poppins(
                           fontSize: 18, color: Colors.white),
-                    ),
+                    ).tr(),
                   ),
                 ),
                 Expanded(
@@ -111,7 +114,12 @@ class RentalNowScreen extends StatelessWidget {
                                 ),
                               ),
                               IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return SaveScanScreen();
+                                    }));
+                                  },
                                   icon: Icon(Icons.arrow_forward_ios))
                             ],
                           )),
@@ -135,17 +143,17 @@ class RentalNowScreen extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 12),
                     child: Text(
-                      'Rental start date',
+                      LocaleKeys.startDate,
                       style: GoogleFonts.poppins(
                           fontSize: 18, color: Colors.white),
-                    ),
+                    ).tr(),
                   ),
                 ),
                 TextFormField(
                     readOnly: true,
                     decoration: InputDecoration(
                         border: UnderlineInputBorder(),
-                        hintText: 'Input start date..'),
+                        hintText: LocaleKeys.hintStartDate.tr()),
                     onTap: () async {
                       DateTime? pickedDate = await showDatePicker(
                           context: context,
@@ -170,17 +178,17 @@ class RentalNowScreen extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 12),
                     child: Text(
-                      'Rental finish date',
+                      LocaleKeys.finishDate,
                       style: GoogleFonts.poppins(
                           fontSize: 18, color: Colors.white),
-                    ),
+                    ).tr(),
                   ),
                 ),
                 TextFormField(
                     readOnly: true,
                     decoration: InputDecoration(
                         border: UnderlineInputBorder(),
-                        hintText: 'Input finish date..'),
+                        hintText: LocaleKeys.hintFinishDate.tr()),
                     onTap: () async {
                       DateTime? pickedDate = await showDatePicker(
                           context: context,
@@ -233,9 +241,9 @@ class RentalNowScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Total Payment',
+                      LocaleKeys.totalPayment,
                       style: GoogleFonts.poppins(fontWeight: FontWeight.w300),
-                    ),
+                    ).tr(),
                     Text(
                       'Rp. 250.000',
                       style:
