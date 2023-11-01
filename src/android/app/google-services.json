@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "540021584381",
+    "project_id": "sepedaku-80ba9",
+    "storage_bucket": "sepedaku-80ba9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:540021584381:android:851f58baa057dc5ee06994",
+        "android_client_info": {
+          "package_name": "com.example.sepedaku"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5Zvzpuu7WAMxVf_4i1aoTHAfvuZFWSK0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
