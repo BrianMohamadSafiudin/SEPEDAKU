@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:sepedaku/screens/auth.dart';
+import 'package:sepedaku/auth.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:sepedaku/components/backgroundAccount.dart';
@@ -9,7 +9,7 @@ import 'package:sepedaku/components/rounded_button.dart';
 import 'package:sepedaku/screens/account/components/profile.dart';
 import 'package:sepedaku/screens/account/components/saveScan.dart';
 import 'package:sepedaku/screens/account/components/scan.dart';
-import 'package:sepedaku/screens/login/login_screen.dart';
+import 'package:sepedaku/screens/welcome/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -42,7 +42,7 @@ class MenuAccount extends StatelessWidget {
   final User? user = Auth().currentUser;
 
   Future<void> signOut() async {
-    await Auth().signOut();
+    await FirebaseAuth.instance.signOut();
   }
 
   @override
@@ -86,12 +86,26 @@ class MenuAccount extends StatelessWidget {
         ),
         Spacer(),
         RoundedButton(
-            text: LocaleKeys.logout,
-            press: signOut, 
-            color: Color(0xffff0000),
-            textColor: Colors.white,
-            height: 40,
-            width: 283),
+          text: LocaleKeys.logout,
+          press: () {
+            // Panggil metode signOut saat tombol "Sign Out" ditekan
+            signOut().then((_) {
+              // Navigasi ke layar sambutan (welcome screen)
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      WelcomeScreen(), // Ganti dengan nama layar sambutan yang sesuai
+                ),
+                (route) => false, // Hapus semua tumpukan layar sebelumnya
+              );
+            });
+          },
+          color: Color(0xffff0000),
+          textColor: Colors.white,
+          height: 40,
+          width: 283,
+        )
       ],
     );
   }

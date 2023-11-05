@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:sepedaku/screens/auth.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:sepedaku/auth.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:sepedaku/components/form_inputEemail.dart';
@@ -23,25 +24,52 @@ class _FormLoginState extends State<FormLogin> {
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
 
-  Future<void> signInWithEmailAndPassword() async {
+  Future<bool> signInWithEmailAndPassword() async {
+    String email = _controllerEmail.text.trim();
+    String password = _controllerPassword.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      setState(() {
+        errorMessage = 'Email and password are required.';
+      });
+      return false;
+    }
+
     try {
-      await Auth().signInWithEmailAndPassword(
-        email: _controllerEmail.text,
-        password: _controllerPassword.text,
-      );
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
+      final userCredential = await Auth()
+          .signInWithEmailAndPassword(email: email, password: password);
+      if (userCredential != null) {
+        // Pengguna ditemukan, login berhasil
+        return true;
+      } else {
+        // Pengguna tidak ditemukan, login gagal
         setState(() {
-          errorMessage = 'No user found for that email.';
+          errorMessage = 'No user found.';
         });
-      } else if (e.code == 'wrong-password') {
+        return false;
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'wrong-password') {
         setState(() {
           errorMessage = 'Wrong password provided for that user.';
+        });
+      } else {
+        setState(() {
+          errorMessage = 'An error occurred during sign-in: ${e.message}';
         });
       }
       setState(() {
         isLogin = false;
       });
+      return false; // Login gagal
+    } catch (error) {
+      setState(() {
+        errorMessage = 'An unexpected error occurred during sign-in.';
+      });
+      setState(() {
+        isLogin = false;
+      });
+      return false; // Login gagal
     }
   }
 
@@ -59,24 +87,13 @@ class _FormLoginState extends State<FormLogin> {
   }
 
   Widget _errorMessage() {
-    return Text(errorMessage == '' ? '' : 'Humm ? $errorMessage');
+    return Text(errorMessage == '' ? '' : 'Hmm? $errorMessage');
   }
 
   Widget _submitButton() {
     return ElevatedButton(
-      onPressed: isLogin ? signInWithEmailAndPassword : createUserWithEmailAndPassword,
-      child: Text(isLogin ? 'Login' : 'Register'),
-    );
-  }
-
-  Widget _loginOrRegisterButton() {
-    return TextButton(
-      onPressed: () {
-        setState(() {
-          isLogin = !isLogin;
-        });
-      },
-      child: Text(isLogin ? 'Register' : 'Login'),
+      onPressed: signInWithEmailAndPassword,
+      child: Text('Login'),
     );
   }
 
@@ -94,35 +111,58 @@ class _FormLoginState extends State<FormLogin> {
             SizedBox(height: 26),
             _entryField('password', _controllerPassword),
             _errorMessage(),
-            _submitButton(),
-            _loginOrRegisterButton(),
             Container(
               alignment: Alignment(1, 1),
               child: TextButton(
                 onPressed: () {},
                 child: Text(
-                    LocaleKeys.forgotPassword,
-                    style: GoogleFonts.poppins(
-                        fontSize: 14,
-                        color: Color(0xff1F41BB),
-                        fontWeight: FontWeight.w600),
-                  ).tr()),
-                ),
+                  LocaleKeys.forgotPassword,
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    color: Color(0xff1F41BB),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ).tr(),
               ),
             ),
             Spacer(),
             RoundedButton(
               text: LocaleKeys.signin,
               press: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return DashboardScreen();
-                }));
+                signInWithEmailAndPassword().then((isLoginSuccessful) {
+                  if (isLoginSuccessful) {
+                    // Navigasi ke DashboardScreen jika proses login berhasil
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return DashboardScreen();
+                    }));
+                  } else {
+                    // Tampilkan pesan kesalahan jika login gagal
+                    if (errorMessage != null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(errorMessage ??
+                              "Login failed. Please check your credentials."),
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                              "Login failed. Please check your credentials."),
+                        ),
+                      );
+                    }
+                  }
+                }).catchError((error) {
+                  // Handle error jika ada kesalahan lainnya (opsional)
+                });
               },
               color: Color(0xff1F41BB),
               textColor: Colors.white,
               height: 60,
               width: 357,
-            ),
+            )
           ],
         ),
       ),
