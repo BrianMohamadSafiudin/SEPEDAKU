@@ -5,7 +5,7 @@
     "login": "Masuk",
     "register": "Daftar",
     "titleLogin": "Masuk",
-    "subtitleLogin": "Selamat Datang kembali!",
+    "subtitleLogin": "Selamat Datang Kembali!",
     "forgotPassword": "Lupa password?",
     "signin": "Masuk",
     "or": "Atau",
@@ -19,7 +19,7 @@
 
     "welcome": "Selamat Datang,",
     "rentinprogress": "Rental Dalam Proses",
-    "orderby": "Ordered by",
+    "orderby": "Di pesan oleh",
 
     "transactions": "Transaksi",
     "search": "Cari...",
@@ -52,5 +52,6 @@
     "save": "Simpan",
     "back": "Kembali",
     "simSaved": "SIM Saved",
+    "crop": "Potong gambar kamu",
     "logout": "Keluar"
 }

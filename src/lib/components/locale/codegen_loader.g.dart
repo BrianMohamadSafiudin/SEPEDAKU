@@ -63,6 +63,7 @@ class CodegenLoader extends AssetLoader{
   "save": "Save",
   "back": "Back",
   "simSaved": "Driver License Saved",
+  "crop": "Crop your picture",
   "logout": "Logout"
 };
 static const Map<String,dynamic> id = {
@@ -71,7 +72,7 @@ static const Map<String,dynamic> id = {
   "login": "Masuk",
   "register": "Daftar",
   "titleLogin": "Masuk",
-  "subtitleLogin": "Selamat Datang kembali!",
+  "subtitleLogin": "Selamat Datang Kembali!",
   "forgotPassword": "Lupa password?",
   "signin": "Masuk",
   "or": "Atau",
@@ -83,7 +84,7 @@ static const Map<String,dynamic> id = {
   "alreadyhaveaccount": "Sudah punya akun?",
   "welcome": "Selamat Datang,",
   "rentinprogress": "Rental Dalam Proses",
-  "orderby": "Ordered by",
+  "orderby": "Di pesan oleh",
   "transactions": "Transaksi",
   "search": "Cari...",
   "rentalNow": "Rental Sekarang",
@@ -114,6 +115,7 @@ static const Map<String,dynamic> id = {
   "save": "Simpan",
   "back": "Kembali",
   "simSaved": "SIM Saved",
+  "crop": "Potong gambar kamu",
   "logout": "Keluar"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"en": en, "id": id};

@@ -15,7 +15,7 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  String selectedLanguage = 'en';
+  String selectedLanguage = 'id';
 
   @override
   Widget build(BuildContext context) {
