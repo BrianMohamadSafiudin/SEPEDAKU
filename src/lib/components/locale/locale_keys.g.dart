@@ -49,6 +49,7 @@ abstract class  LocaleKeys {
   static const save = 'save';
   static const back = 'back';
   static const simSaved = 'simSaved';
+  static const crop = 'crop';
   static const logout = 'logout';
 
 }

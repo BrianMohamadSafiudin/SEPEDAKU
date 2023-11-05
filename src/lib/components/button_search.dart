@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:sepedaku/components/color.dart';
 import 'package:flutter/material.dart';
+import 'package:sepedaku/components/locale/locale_keys.g.dart';
 
 class ButtonSearch extends StatelessWidget {
   const ButtonSearch({
@@ -19,7 +21,7 @@ class ButtonSearch extends StatelessWidget {
             child: TextFormField(
               decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(left: 16),
-                  hintText: 'Search...',
+                  hintText: LocaleKeys.search.tr(),
                   border: InputBorder.none),
             ),
           ),

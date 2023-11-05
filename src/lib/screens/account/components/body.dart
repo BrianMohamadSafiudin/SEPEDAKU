@@ -22,6 +22,7 @@ class Body extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return BackgroundAccount(
+      heightBox: size.height * 0.25,
         child: Column(
       children: [
         HeaderBodyAccount(),

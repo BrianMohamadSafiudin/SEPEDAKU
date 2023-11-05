@@ -1,4 +1,6 @@
+import 'package:camera/camera.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sepedaku/components/backgroundAccount.dart';
 import 'package:sepedaku/components/color.dart';
 import 'package:sepedaku/components/locale/locale_keys.g.dart';
@@ -13,115 +15,125 @@ class EditProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: primaryColor,
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.arrow_back)),
+          title: Text(
+            LocaleKeys.editProfile,
+            style: GoogleFonts.poppins(fontSize: 22, color: Colors.white),
+          ).tr(),
+        ),
         body: BackgroundAccount(
-      child: ListView(
-        children: [
-          HeaderProfileAccount(),
-          Container(
-            height: size.height * 0.55,
-            margin: EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                FormAccount(
-                  title: LocaleKeys.username,
-                  obscureText: false,
-                  controller: TextEditingController(text: 'Edward'),
-                  keyboardType: TextInputType.text,
+          heightBox: size.height * 0.15,
+          child: ListView(
+            children: [
+              HeaderProfileAccount(),
+              Container(
+                height: size.height * 0.55,
+                margin: EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    FormAccount(
+                      title: LocaleKeys.username,
+                      obscureText: false,
+                      controller: TextEditingController(text: 'Edward'),
+                      keyboardType: TextInputType.text,
+                    ),
+                    FormAccount(
+                      title: 'Email',
+                      obscureText: false,
+                      controller:
+                          TextEditingController(text: 'edward@gmail.com'),
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    FormAccount(
+                      title: 'Password',
+                      obscureText: true,
+                      controller: TextEditingController(text: 'Marinus24'),
+                      keyboardType: TextInputType.visiblePassword,
+                    ),
+                    FormAccount(
+                      title: LocaleKeys.confirmPassword,
+                      controller: TextEditingController(text: 'Marinus24'),
+                      obscureText: true,
+                      keyboardType: TextInputType.visiblePassword,
+                    ),
+                    RoundedButton(
+                        text: LocaleKeys.update,
+                        press: () {},
+                        color: primaryColor,
+                        textColor: Colors.white,
+                        height: 40,
+                        width: 283),
+                  ],
                 ),
-                FormAccount(
-                  title: 'Email',
-                  obscureText: false,
-                  controller: TextEditingController(text: 'edward@gmail.com'),
-                  keyboardType: TextInputType.emailAddress,
-                ),
-                FormAccount(
-                  title: 'Password',
-                  obscureText: true,
-                  controller: TextEditingController(text: 'Marinus24'),
-                  keyboardType: TextInputType.visiblePassword,
-                ),
-                FormAccount(
-                  title: LocaleKeys.confirmPassword,
-                  controller: TextEditingController(text: 'Marinus24'),
-                  obscureText: true,
-                  keyboardType: TextInputType.visiblePassword,
-                ),
-                RoundedButton(
-                    text: LocaleKeys.update,
-                    press: () {},
-                    color: primaryColor,
-                    textColor: Colors.white,
-                    height: 40,
-                    width: 283),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
-    ));
+        ));
   }
 }
 
-class HeaderProfileAccount extends StatelessWidget {
+class HeaderProfileAccount extends StatefulWidget {
   const HeaderProfileAccount({
     super.key,
   });
 
   @override
+  State<HeaderProfileAccount> createState() => _HeaderProfileAccountState();
+}
+
+class _HeaderProfileAccountState extends State<HeaderProfileAccount> {
+  XFile? imageFile;
+
+  Future<void> _openGallery() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        imageFile = XFile(pickedFile.path);
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Container(
-      margin: EdgeInsets.only(top: 25),
-      height: size.height * 0.38,
+      margin: EdgeInsets.only(bottom: 25, top: 50),
       child: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Row(
-              children: [
-                IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(
-                      Icons.arrow_back,
-                      color: Colors.white,
-                    )),
-                Text(
-                  LocaleKeys.editProfile,
-                  style: GoogleFonts.poppins(fontSize: 22, color: Colors.white),
-                ).tr(),
-              ],
-            ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 134,
-                    width: 134,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: ClipOval(
-                      child: Image.asset(
-                        "assets/images/cipung.png",
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      LocaleKeys.changePicture,
-                      style: GoogleFonts.poppins(
-                          color: Colors.black, fontWeight: FontWeight.w400),
-                    ).tr(),
-                  )
-                ],
+            Container(
+              height: 134,
+              width: 134,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: ClipOval(
+                child: Image.asset(
+                  "assets/images/cipung.png",
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
+            TextButton(
+              onPressed: () {
+                _openGallery();
+              },
+              child: Text(
+                LocaleKeys.changePicture,
+                style: GoogleFonts.poppins(
+                    color: Colors.black, fontWeight: FontWeight.w400),
+              ).tr(),
+            )
           ],
         ),
       ),
