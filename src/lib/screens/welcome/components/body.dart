@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Body extends StatefulWidget {
-  const Body({super.key});
+  const Body({Key? key});
 
   @override
   State<Body> createState() => _BodyState();
@@ -16,9 +16,11 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   String selectedLanguage = 'en';
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     return Background(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -54,9 +56,7 @@ class _BodyState extends State<Body> {
               },
             ),
           ),
-          SizedBox(
-            height: 23,
-          ),
+          SizedBox(height: 23),
           Image.asset(
             "assets/images/motor.png",
             height: size.height * 0.35,
@@ -68,14 +68,13 @@ class _BodyState extends State<Body> {
                 Text(
                   LocaleKeys.title,
                   style: GoogleFonts.poppins(
-                      fontSize: 35,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xff1F41BB)),
+                    fontSize: 35,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xff1F41BB),
+                  ),
                   textAlign: TextAlign.center,
                 ).tr(),
-                SizedBox(
-                  height: 23,
-                ),
+                SizedBox(height: 23),
                 Text(
                   LocaleKeys.subtitle,
                   style: GoogleFonts.poppins(fontSize: 14),
@@ -84,9 +83,7 @@ class _BodyState extends State<Body> {
               ],
             ),
           ),
-          SizedBox(
-            height: 23,
-          ),
+          SizedBox(height: 23),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -116,9 +113,7 @@ class _BodyState extends State<Body> {
               )
             ],
           ),
-          SizedBox(
-            height: 23,
-          ),
+          SizedBox(height: 23),
         ],
       ),
     );

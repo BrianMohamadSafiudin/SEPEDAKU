@@ -14,7 +14,8 @@ class Auth {
     required String password,
   }) async {
     try {
-      final UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(
+      final UserCredential userCredential =
+          await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -31,7 +32,8 @@ class Auth {
     required String password,
   }) async {
     try {
-      final UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
+      final UserCredential userCredential =
+          await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );

@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:sepedaku/screens/auth.dart';
+import 'package:sepedaku/auth.dart';
 import 'package:sepedaku/components/bottomNavBar.dart';
 import 'package:sepedaku/screens/account/components/body.dart';
 import 'package:flutter/material.dart';

@@ -1,8 +1,8 @@
 plugins {
     id "com.android.application"
     id "kotlin-android"
-    id "dev.flutter.flutter-gradle-plugin"
     id "com.google.gms.google-services"
+    id "dev.flutter.flutter-gradle-plugin"
 }
 
 def localProperties = new Properties()
@@ -23,6 +23,10 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'com.google.gms.google-services'
+
 android {
     namespace "com.example.sepedaku"
     compileSdkVersion flutter.compileSdkVersion
@@ -42,10 +46,7 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.example.sepedaku"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion 19
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
@@ -54,11 +55,9 @@ android {
     }
 
     buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
-        }
+            release {
+                signingConfig signingConfigs.debug
+            }
     }
 }
 
@@ -67,15 +66,9 @@ flutter {
 }
 
 dependencies {
-  // Import the Firebase BoM
-  implementation platform('com.google.firebase:firebase-bom:32.4.1')
-
-
-  // TODO: Add the dependencies for Firebase products you want to use
-  // When using the BoM, don't specify versions in Firebase dependencies
   implementation 'com.google.firebase:firebase-analytics'
+  implementation platform('com.google.firebase:firebase-bom:30.3.0') // Perbarui ke versi 32.5.0
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
   implementation 'com.android.support:multidex:1.0.3'
-
-  // Add the dependencies for any other desired Firebase products
-  // https://firebase.google.com/docs/android/setup#available-libraries
+  // Tambahkan dependensi Firebase lain yang Anda perlukan
 }
