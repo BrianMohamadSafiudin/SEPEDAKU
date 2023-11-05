@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:sepedaku/widget_tree.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
@@ -8,10 +9,13 @@ import 'package:sepedaku/screens/welcome/welcome_screen.dart';
 import 'package:sepedaku/screens/dashboard/dashboard_screen.dart';  // Import halaman DashboardScreen
 import 'package:firebase_auth/firebase_auth.dart';
 
+late List<CameraDescription> cameras;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp();
+
+  cameras = await availableCameras();
 
   runApp(
     EasyLocalization(

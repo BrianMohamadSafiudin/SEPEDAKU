@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 
 class BackgroundAccount extends StatelessWidget {
   final Widget child;
+  final double heightBox;
   const BackgroundAccount({
     super.key,
     required this.child,
+    required this.heightBox,
   });
 
   @override
@@ -17,7 +19,7 @@ class BackgroundAccount extends StatelessWidget {
       child: Stack(
         children: [
           Container(
-            height: size.height * 0.25,
+            height: heightBox,
             color: primaryColor,
           ),
           Container(

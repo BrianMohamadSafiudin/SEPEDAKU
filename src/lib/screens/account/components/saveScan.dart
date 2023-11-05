@@ -4,6 +4,7 @@ import 'package:sepedaku/components/locale/locale_keys.g.dart';
 import 'package:sepedaku/screens/account/account_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sepedaku/screens/account/components/detailScan.dart';
 
 class SaveScanScreen extends StatelessWidget {
   const SaveScanScreen({super.key});
@@ -36,7 +37,9 @@ class SaveScanScreen extends StatelessWidget {
                 crossAxisCount: 1, childAspectRatio: 3, mainAxisSpacing: 5),
             itemBuilder: (context, index) {
               return InkWell(
-                onTap: () {},
+                onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return DetailScanScreen();
+                  }));},
                 child: Card(
                   child: Container(
                     margin: EdgeInsets.all(16),
