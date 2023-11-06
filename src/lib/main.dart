@@ -43,9 +43,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'SEPEDAKU',
       theme: ThemeData(),
-      home: SingleChildScrollView(
-        child: Column(
-          children: [
+      home: 
             Background(
               child: AnimatedSplashScreen(
                 splash: "assets/images/logo.png",
@@ -54,10 +52,7 @@ class MyApp extends StatelessWidget {
                 splashTransition: SplashTransition.fadeTransition,
               ),
             ),
-            WidgetTree(),
-          ],
-        ),
-      ),
+
     );
   }
 }
