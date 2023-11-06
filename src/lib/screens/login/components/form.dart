@@ -3,8 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sepedaku/auth.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-import 'package:sepedaku/components/form_inputEemail.dart';
-import 'package:sepedaku/components/form_inputPassword.dart';
 import 'package:sepedaku/components/locale/locale_keys.g.dart';
 import 'package:sepedaku/components/rounded_button.dart';
 import 'package:sepedaku/screens/dashboard/dashboard_screen.dart';
@@ -73,12 +71,10 @@ class _FormLoginState extends State<FormLogin> {
     }
   }
 
-  void createUserWithEmailAndPassword() {
-    // Implement user registration logic here
-  }
-
-  Widget _entryField(String title, TextEditingController controller) {
+  Widget _entryField(
+      String title, TextEditingController controller, bool obscureText) {
     return TextField(
+      obscureText: obscureText,
       controller: controller,
       decoration: InputDecoration(
         labelText: title,
@@ -107,9 +103,9 @@ class _FormLoginState extends State<FormLogin> {
         child: Column(
           children: [
             Spacer(),
-            _entryField('email', _controllerEmail),
+            _entryField('Email', _controllerEmail, false),
             SizedBox(height: 26),
-            _entryField('password', _controllerPassword),
+            _entryField('Password', _controllerPassword, true),
             _errorMessage(),
             Container(
               alignment: Alignment(1, 1),

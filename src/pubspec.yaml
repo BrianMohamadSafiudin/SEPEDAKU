@@ -41,6 +41,7 @@ dependencies:
   flutter_svg: ^2.0.7
   firebase_auth: ^4.12.1
   firebase_core: ^2.21.0
+  cloud_firestore: ^4.12.2
   # firebase_core_platform_interface: 4.5.1
   # firebase_messaging: ^13.0.4 # will satisfy your firebase core things that depend on ^4.5.1
   easy_localization: ^3.0.3

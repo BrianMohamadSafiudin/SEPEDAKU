@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Body extends StatelessWidget {
-  const Body({super.key});
+  const Body({Key? key});
 
   @override
   Widget build(BuildContext context) {
