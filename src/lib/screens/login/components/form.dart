@@ -78,6 +78,9 @@ class _FormLoginState extends State<FormLogin> {
       controller: controller,
       decoration: InputDecoration(
         labelText: title,
+        filled: true,
+        fillColor: Color(0xffF1F4FF),
+        border: InputBorder.none,
       ),
     );
   }

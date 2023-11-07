@@ -48,6 +48,7 @@ dependencies:
   camera: ^0.10.5+5
   image_cropper: ^5.0.0
   image_picker: ^1.0.4
+  google_sign_in: ^6.1.5
 
 dev_dependencies:
   flutter_test:

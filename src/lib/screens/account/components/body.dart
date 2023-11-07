@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sepedaku/auth.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -43,7 +44,8 @@ class MenuAccount extends StatelessWidget {
   final User? user = Auth().currentUser;
 
   Future<void> signOut() async {
-    await FirebaseAuth.instance.signOut();
+    await GoogleSignIn().signOut();
+    FirebaseAuth.instance.signOut();
   }
 
   @override

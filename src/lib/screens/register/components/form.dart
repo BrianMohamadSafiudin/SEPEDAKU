@@ -80,6 +80,9 @@ class _FormRegisterState extends State<FormRegister> {
       controller: controller,
       decoration: InputDecoration(
         labelText: title,
+        filled: true,
+        fillColor: Color(0xffF1F4FF),
+        border: InputBorder.none,
       ),
     );
   }
