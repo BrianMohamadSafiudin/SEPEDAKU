@@ -41,4 +41,4 @@ https://www.figma.com/file/blbgqQgC926tgbXdsh6hYr/Flutter-Kelompok-6?type=design
 
 # Credits
 
-(jika ada aset image, icon, font, cantumkan di sini sumber URL)
+https://www.yamaha-motor.co.id/
