@@ -197,7 +197,7 @@ class GridItem extends StatelessWidget {
     return InkWell(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return ViewItemScreen();
+          return ViewItemScreen2();
         }));
       },
       child: Card(
@@ -238,7 +238,7 @@ Widget buildThirdItem(BuildContext context) {
   return InkWell(
     onTap: () {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return ViewItemScreen();
+        return ViewItemScreen3();
       }));
     },
     child: Card(
