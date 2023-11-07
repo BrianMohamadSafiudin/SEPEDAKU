@@ -1,6 +1,6 @@
-# About
+# SEPEDAKU
+Aplikasi sewa motor inovatif yang dirancang untuk membuat perjalanan Anda menjadi lebih mudah
 
-(isikan nim dan nama anggota kelompok, nama aplikasi serta deskripsi aplikasinya)
 ### Anggota Kelompok:
 - 2141720245 - Arsyanda Irza R. Y.
 - 2141720133 - Brian Mohamad Safiudin
@@ -30,9 +30,14 @@ https://www.figma.com/file/blbgqQgC926tgbXdsh6hYr/Flutter-Kelompok-6?type=design
 
 
 # Fitur Unggulan
+- Firebase Authentication
+Kami mengintegrasikan Firebase Authentication, sebuah fitur unggulan yang memungkinkan pengguna untuk mengamankan akun mereka dengan mudah. Firebase Authentication menawarkan berbagai metode otentikasi, termasuk email/password dan otentikasi sosial melalui Google. Fitur ini memberikan lapisan keamanan yang kuat untuk aplikasi Anda, menjaga data pengguna tetap aman, dan memberikan pengalaman pengguna yang nyaman.
 
-(belum ada)
-
+- OCR Surat Izin Mengemudi Otomatis
+Dengan teknologi OCR, pengguna dapat dengan cepat mengunggah gambar Surat Izin Mengemudi, dan aplikasi akan secara otomatis mengekstrak informasi penting, seperti nama, nomor lisensi, tanggal lahir, dan alamat. Ini memungkinkan pengguna untuk dengan mudah memverifikasi data atau mengisi formulir tanpa harus memasukkan informasi dengan tangan. Ini membuat proses administratif lebih efisien dan nyaman.
+  
+- CRUD Firestore
+Aplikasi Flutter kami memanfaatkan Firestore, layanan database NoSQL dari Firebase, untuk melakukan operasi CRUD (Create, Read, Update, Delete). Dengan Firestore, pengguna dapat membuat, membaca, memperbarui, dan menghapus data dengan mudah dan cepat.
 
 # Credits
 
