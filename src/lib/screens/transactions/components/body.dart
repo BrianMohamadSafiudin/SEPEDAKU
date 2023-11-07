@@ -24,9 +24,11 @@ class _BodyState extends State<Body> {
           children: [
             ButtonSearch(),
             IconButton(
-                onPressed: () {setState(() {
+                onPressed: () {
+                  setState(() {
                     isFilterVisible = !isFilterVisible;
-                  });},
+                  });
+                },
                 icon: Icon(
                   Icons.menu,
                   color: primaryColor,
@@ -120,6 +122,7 @@ class _BodyState extends State<Body> {
   }
 }
 
+
 class GridItem extends StatelessWidget {
   const GridItem({
     super.key,
@@ -131,50 +134,143 @@ class GridItem extends StatelessWidget {
     return Container(
       height: size.height * 0.69,
       child: GridView.builder(
-        itemCount: 10,
+        itemCount: 3,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 1, childAspectRatio: 4, mainAxisSpacing: 5),
+          crossAxisCount: 1,
+          childAspectRatio: 4,
+          mainAxisSpacing: 5,
+        ),
         itemBuilder: (context, index) {
-          return InkWell(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return ViewItemScreen();
-              }));
-            },
-            child: Card(
-              child: Container(
-                margin: EdgeInsets.all(16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Image.asset(
-                      "assets/images/kawasaki.png",
-                    ),
-                    Column(
-                      children: [
-                        Text("Aerox"),
-                        Text("N 5631 KL"),
-                      ],
-                    ),
-                    Container(
-                      height: 15,
-                      width: 52,
-                      decoration: BoxDecoration(
-                          border: Border.all(width: 0.2),
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Text(
-                        "SIM C",
-                        textAlign: TextAlign.center,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-          );
+          if (index == 0) {
+            return buildFirstItem(context);
+          } else if (index == 1) {
+            return buildSecondItem(context);
+          } else {
+            return buildThirdItem(context);
+          }
         },
       ),
     );
   }
+
+  Widget buildFirstItem(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return ViewItemScreen();
+        }));
+      },
+      child: Card(
+        child: Container(
+          margin: EdgeInsets.all(16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image.asset("assets/images/kawasaki.png"),
+              Column(
+                children: [
+                  Text("Kawasaki ZX 25R"),
+                  Text("N 9933 KL"),
+                ],
+              ),
+              Container(
+                height: 15,
+                width: 52,
+                decoration: BoxDecoration(
+                  border: Border.all(width: 0.2),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Text(
+                  "SIM C",
+                  textAlign: TextAlign.center,
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildSecondItem(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return ViewItemScreen();
+        }));
+      },
+      child: Card(
+        child: Container(
+          margin: EdgeInsets.all(16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image.asset("assets/images/Matic1.png"),
+              Column(
+                children: [
+                  Text("Yamaha Grand Filanos"),
+                  Text("N 3781 KL"),
+                ],
+              ),
+              Container(
+                height: 15,
+                width: 52,
+                decoration: BoxDecoration(
+                  border: Border.all(width: 0.2),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Text(
+                  "SIM C",
+                  textAlign: TextAlign.center,
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+Widget buildThirdItem(BuildContext context) {
+  return InkWell(
+    onTap: () {
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return ViewItemScreen();
+      }));
+    },
+    child: Card(
+      child: Container(
+        margin: EdgeInsets.all(16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image.asset(
+                "assets/images/Matic2.png"), // Replace with the actual image path
+            Column(
+              children: [
+                Text("Yamaha XMax 250"),
+                Text("N 2645 KL"),
+              ],
+            ),
+            Container(
+              height: 15,
+              width: 52,
+              decoration: BoxDecoration(
+                border: Border.all(width: 0.2),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Text(
+                "SIM C",
+                textAlign: TextAlign.center,
+              ),
+            )
+          ],
+        ),
+      ),
+    ),
+  );
 }
