@@ -66,7 +66,6 @@ class _ScanScreenState extends State<ScanScreen> {
 
     try {
       XFile file = await controller.takePicture();
-      if (file != null) {
         CroppedFile? croppedFile = await ImageCropper().cropImage(
           sourcePath: file.path,
           aspectRatioPresets: [
@@ -89,7 +88,6 @@ class _ScanScreenState extends State<ScanScreen> {
           setState(() {
             imageFile = XFile(croppedFile.path);
           });
-        }
       }
     } catch (e) {
       print("Error taking picture: $e");
@@ -127,6 +125,20 @@ class _ScanScreenState extends State<ScanScreen> {
     }
   }
 
+  Future<void> _onTapFocus(TapDownDetails details, Size size) async {
+    try {
+      if (!controller.value.isInitialized) {
+        return;
+      }
+      final offset = Offset(details.localPosition.dx / size.width,
+          details.localPosition.dy / size.height);
+      await controller.setExposurePoint(offset);
+      await controller.setFocusPoint(offset);
+    } catch (e) {
+      print("Error focusing: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -134,47 +146,53 @@ class _ScanScreenState extends State<ScanScreen> {
       return Container();
     }
     return Scaffold(
-      body: Column(children: [
-        Padding(
-          padding: const EdgeInsets.all(22),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              CircleButton(
-                press: () {
-                  setState(() {
-                    isFlashOn = !isFlashOn;
-                    _toggleFlash();
-                  });
-                },
-                icon: isFlashOn ? Icons.flash_on : Icons.flash_off,
-                colorIcon: Colors.white,
-                colorBorder: primaryColor,
-              ),
-              CircleButton(
-                press: () {
-                  _openGallery();
-                },
-                icon: Icons.photo_library,
-                colorIcon: Colors.white,
-                colorBorder: primaryColor,
-              ),
-            ],
+      body: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTapDown: (TapDownDetails details) {
+          _onTapFocus(details, size);
+        },
+        child: Column(children: [
+          Padding(
+            padding: const EdgeInsets.all(22),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CircleButton(
+                  press: () {
+                    setState(() {
+                      isFlashOn = !isFlashOn;
+                      _toggleFlash();
+                    });
+                  },
+                  icon: isFlashOn ? Icons.flash_on : Icons.flash_off,
+                  colorIcon: Colors.white,
+                  colorBorder: primaryColor,
+                ),
+                CircleButton(
+                  press: () {
+                    _openGallery();
+                  },
+                  icon: Icons.photo_library,
+                  colorIcon: Colors.white,
+                  colorBorder: primaryColor,
+                ),
+              ],
+            ),
           ),
-        ),
-        Expanded(
-          child: Container(
-            height: size.height * 0.7199,
-            width: double.infinity,
-            child: imageFile != null
-                ? Image.file(
-                    File(imageFile!.path),
-                    fit: BoxFit.contain,
-                  )
-                : CameraPreview(controller),
+          Expanded(
+            child: Container(
+              height: size.height * 0.7199,
+              width: double.infinity,
+              child: imageFile != null
+                  ? Image.file(
+                      File(imageFile!.path),
+                      fit: BoxFit.contain,
+                    )
+                  : CameraPreview(controller),
+            ),
           ),
-        ),
-      ]),
+        ]),
+      ),
       bottomNavigationBar: BottomAppBar(
         color: primaryColor,
         height: size.height * 0.16,
@@ -202,9 +220,33 @@ class _ScanScreenState extends State<ScanScreen> {
                 ),
               CircleButton(
                 press: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return DetailScanScreen();
-                  }));
+                  if (imageFile != null) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return DetailScanScreen(
+                        imageSim: imageFile,
+                      );
+                    }));
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text("No Image Selected"),
+                          content: Text(
+                              "Please capture or select an image before proceeding."),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context); // Close the dialog
+                              },
+                              child: Text("OK"),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
                 },
                 icon: Icons.check,
                 colorBorder: Colors.white,
