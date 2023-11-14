@@ -1,4 +1,6 @@
 import 'package:camera/camera.dart';
+import 'package:provider/provider.dart';
+import 'package:sepedaku/provider/simProvider.dart';
 import 'package:sepedaku/widget_tree.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
@@ -6,7 +8,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:sepedaku/components/background.dart';
 import 'package:sepedaku/screens/welcome/welcome_screen.dart';
-import 'package:sepedaku/screens/dashboard/dashboard_screen.dart';  // Import halaman DashboardScreen
+import 'package:sepedaku/screens/dashboard/dashboard_screen.dart'; // Import halaman DashboardScreen
 import 'package:firebase_auth/firebase_auth.dart';
 
 late List<CameraDescription> cameras;
@@ -21,7 +23,9 @@ Future<void> main() async {
     EasyLocalization(
       supportedLocales: [Locale('en'), Locale('id')],
       path: 'assets/translations',
-      child: MyApp(),
+      child: MultiProvider(providers: [
+        ChangeNotifierProvider(create: (_) => SimProvider()),
+      ], child: MyApp()),
     ),
   );
 }
@@ -43,16 +47,14 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'SEPEDAKU',
       theme: ThemeData(),
-      home: 
-            Background(
-              child: AnimatedSplashScreen(
-                splash: "assets/images/logo.png",
-                splashIconSize: size.height * 0.5,
-                nextScreen: isLoggedIn ? DashboardScreen() : WelcomeScreen(),
-                splashTransition: SplashTransition.fadeTransition,
-              ),
-            ),
-
+      home: Background(
+        child: AnimatedSplashScreen(
+          splash: "assets/images/logo.png",
+          splashIconSize: size.height * 0.5,
+          nextScreen: isLoggedIn ? DashboardScreen() : WelcomeScreen(),
+          splashTransition: SplashTransition.fadeTransition,
+        ),
+      ),
     );
   }
 }

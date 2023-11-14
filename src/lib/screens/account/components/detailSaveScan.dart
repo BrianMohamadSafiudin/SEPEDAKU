@@ -1,89 +1,72 @@
 import 'dart:io';
 
-import 'package:camera/camera.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
-import 'package:sepedaku/components/color.dart';
 import 'package:sepedaku/components/locale/locale_keys.g.dart';
 import 'package:sepedaku/components/rounded_button.dart';
-import 'package:sepedaku/model/simModel.dart';
-import 'package:sepedaku/provider/simProvider.dart';
-import 'package:sepedaku/screens/account/components/saveScan.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sepedaku/provider/simProvider.dart';
 
-class DetailScanScreen extends StatelessWidget {
-  final XFile? imageSim;
-  const DetailScanScreen({super.key, this.imageSim});
+class DetailSaveScanScreen extends StatelessWidget {
+  final String imagePath;
+  final int currentIndex;
+  const DetailSaveScanScreen(
+      {super.key, required this.imagePath, required this.currentIndex});
+
+  void deleteScan(BuildContext context) {
+    Provider.of<
+    SimProvider>(context, listen: false)
+        .removeSim(currentIndex);
+
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Container(
+        body: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              Container(
                 margin: EdgeInsets.only(bottom: 12),
                 height: size.height * 0.3,
-                child: imageSim != null
-                    ? Image.file(File(imageSim!.path))
-                    : Center(child: Text('Tidak ada gambar!'))),
-            Container(
-              height: size.height * 0.53,
-              child: FormScan(),
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-          height: size.height * 0.1,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              RoundedButton(
-                  text: LocaleKeys.back,
-                  press: () {
-                    Navigator.pop(context);
-                  },
-                  color: Colors.white,
-                  textColor: Colors.black,
-                  height: 45,
-                  width: 141),
-              RoundedButton(
-                  text: LocaleKeys.save,
-                  press: () {
-                    var savedSimProvider =
-                        Provider.of<SimProvider>(context, listen: false);
-                    SimModel sim = SimModel(
-                      simImage: imageSim!.path,
-                      driverLicense: 'C',
-                      simNumber: '1002-9108-2828',
-                      name: 'Edward Sunan Hutabarat',
-                      dateBirth: 'Batam, 30-08-1999',
-                      gender: 'Pria',
-                      address: 'Kampung Seraya',
-                      work: 'Wiraswasta',
-                      simPeriod: DateTime(12 - 06 - 2028),
-                    );
-
-                    savedSimProvider.addSim(sim);
-
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) {
-                        return SaveScanScreen();
-                      }),
-                    );
-                  },
-                  color: primaryColor,
-                  textColor: Colors.white,
-                  height: 45,
-                  width: 141),
+                child: Image.file(File(imagePath)),
+              ),
+              Container(
+                height: size.height * 0.53,
+                child: FormScan(),
+              ),
             ],
-          )),
-    );
+          ),
+        ),
+        bottomNavigationBar: BottomAppBar(
+            height: size.height * 0.1,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                RoundedButton(
+                    text: LocaleKeys.back,
+                    press: () {
+                      Navigator.pop(context);
+                    },
+                    color: Colors.white,
+                    textColor: Colors.black,
+                    height: 45,
+                    width: 141),
+                RoundedButton(
+                    text: 'Delete',
+                    press: () {
+                      deleteScan(context);
+                    },
+                    color: Colors.red,
+                    textColor: Colors.white,
+                    height: 45,
+                    width: 141),
+              ],
+            )));
   }
 }
 
