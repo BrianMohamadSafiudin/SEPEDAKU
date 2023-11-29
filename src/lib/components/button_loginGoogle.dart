@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -10,24 +11,41 @@ import 'package:sepedaku/screens/dashboard/dashboard_screen.dart';
 class ButtonLoginGoogle extends StatelessWidget {
   ButtonLoginGoogle({Key? key}) : super(key: key);
 
-  void signInWithGoogle(BuildContext context) async {
-    GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+void signInWithGoogle(BuildContext context) async {
+    try {
+      GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-    GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+      GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
 
-    AuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken, 
-    );
+      AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
 
-    UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
 
-    print(userCredential.user?.displayName);
+      print(userCredential.user?.displayName);
 
-    if (userCredential.user != null) {
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => DashboardScreen()));
+      if (userCredential.user != null) {
+        await _addUserDataToFireStore(userCredential.user!);
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => DashboardScreen()));
+      }
+    } catch (e) {
+      print("Error signing in with Google: $e");
+      // Handle error accordingly
     }
+  }
+
+  Future<void> _addUserDataToFireStore(User user) async {
+    final usersCollection = FirebaseFirestore.instance.collection('users');
+
+    await usersCollection.doc(user.uid).set({
+      'username': user.displayName,
+      'email': user.email,
+      'profile_image': "",
+    });
   }
 
   @override

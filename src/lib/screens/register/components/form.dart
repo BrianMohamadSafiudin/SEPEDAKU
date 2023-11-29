@@ -20,7 +20,8 @@ class _FormRegisterState extends State<FormRegister> {
   final TextEditingController _controllerUsername = TextEditingController();
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
-  final TextEditingController _controllerConfirmPassword = TextEditingController();
+  final TextEditingController _controllerConfirmPassword =
+      TextEditingController();
 
   // Firebase Firestore instance
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -56,6 +57,7 @@ class _FormRegisterState extends State<FormRegister> {
         await _firestore.collection('users').doc(user.uid).set({
           'username': _controllerUsername.text.trim(),
           'email': email,
+          'profile_image': "",
           // You can store other user information here
         });
 
@@ -74,7 +76,8 @@ class _FormRegisterState extends State<FormRegister> {
     }
   }
 
-  Widget _entryField(String title, TextEditingController controller, bool obscureText) {
+  Widget _entryField(
+      String title, TextEditingController controller, bool obscureText) {
     return TextField(
       obscureText: obscureText,
       controller: controller,
@@ -123,7 +126,8 @@ class _FormRegisterState extends State<FormRegister> {
                 registerWithEmailAndPassword().then((isRegistrationSuccessful) {
                   if (isRegistrationSuccessful) {
                     // Navigasi ke DashboardScreen jika pendaftaran berhasil
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
                       return DashboardScreen();
                     }));
                   } else {
