@@ -16,6 +16,8 @@ class SaveScanScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
+    Provider.of<SimProvider>(context, listen: false).fetchSavedSims();
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(

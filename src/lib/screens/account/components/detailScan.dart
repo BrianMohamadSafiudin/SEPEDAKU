@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:sepedaku/components/color.dart';
 import 'package:sepedaku/components/locale/locale_keys.g.dart';
@@ -53,29 +55,45 @@ class DetailScanScreen extends StatelessWidget {
                   width: 141),
               RoundedButton(
                   text: LocaleKeys.save,
-                  press: () {
+                  press: () async {
                     var savedSimProvider =
                         Provider.of<SimProvider>(context, listen: false);
-                    SimModel sim = SimModel(
-                      simImage: imageSim!.path,
-                      driverLicense: 'C',
-                      simNumber: '1002-9108-2828',
-                      name: 'Edward Sunan Hutabarat',
-                      dateBirth: 'Batam, 30-08-1999',
-                      gender: 'Pria',
-                      address: 'Kampung Seraya',
-                      work: 'Wiraswasta',
-                      simPeriod: DateTime(12 - 06 - 2028),
-                    );
+                    final user = FirebaseAuth.instance.currentUser;
 
-                    savedSimProvider.addSim(sim);
+                    if (user != null) {
+                      try {
+                        var simCollectionRef = FirebaseFirestore.instance
+                            .collection('sim')
+                            .doc(user.uid)
+                            .collection('simUser');
+                        var newSimDocRef = simCollectionRef.doc();
+                        SimModel sim = SimModel(
+                          simImage: imageSim!.path,
+                          driverLicense: 'C',
+                          simNumber: '1002-9108-2828',
+                          name: 'Edward Sunan Hutabarat',
+                          dateBirth: 'Batam, 30-08-1999',
+                          gender: 'Pria',
+                          address: 'Kampung Seraya',
+                          work: 'Wiraswasta',
+                          simPeriod: '12 - 06 - 2028',
+                        );
 
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) {
-                        return SaveScanScreen();
-                      }),
-                    );
+                        await newSimDocRef.set(sim.toMap());
+                        savedSimProvider.addSim(sim);
+
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) {
+                            return SaveScanScreen();
+                          }),
+                        );
+                      } catch (e) {
+                        print('Error saving to Firestore: $e');
+                      }
+                    } else {
+                      print('User not authenticated');
+                    }
                   },
                   color: primaryColor,
                   textColor: Colors.white,

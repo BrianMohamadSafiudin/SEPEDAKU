@@ -15,9 +15,7 @@ class DetailSaveScanScreen extends StatelessWidget {
       {super.key, required this.imagePath, required this.currentIndex});
 
   void deleteScan(BuildContext context) {
-    Provider.of<
-    SimProvider>(context, listen: false)
-        .removeSim(currentIndex);
+    Provider.of<SimProvider>(context, listen: false).removeSim(currentIndex);
 
     Navigator.pop(context);
   }
@@ -59,7 +57,27 @@ class DetailSaveScanScreen extends StatelessWidget {
                 RoundedButton(
                     text: 'Delete',
                     press: () {
-                      deleteScan(context);
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text('Delete this item?'),
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('No')),
+                              TextButton(
+                                  onPressed: () {
+                                    deleteScan(context);
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('Yes'))
+                            ],
+                          );
+                        },
+                      );
                     },
                     color: Colors.red,
                     textColor: Colors.white,
