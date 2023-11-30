@@ -6,6 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:sepedaku/components/backgroundAccount.dart';
 import 'package:sepedaku/components/color.dart';
 import 'package:sepedaku/components/locale/locale_keys.g.dart';
+import 'package:sepedaku/components/profile_user.dart';
 import 'package:sepedaku/components/rounded_button.dart';
 import 'package:sepedaku/screens/account/components/profile.dart';
 import 'package:sepedaku/screens/account/components/saveScan.dart';
@@ -23,18 +24,18 @@ class Body extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return BackgroundAccount(
-      heightBox: size.height * 0.25,
+        heightBox: size.height * 0.25,
         child: Column(
-      children: [
-        HeaderBodyAccount(),
-        SizedBox(height: size.height * 0.05),
-        Container(
-          height: size.height * 0.5,
-          margin: EdgeInsets.symmetric(horizontal: 16),
-          child: MenuAccount(),
-        ),
-      ],
-    ));
+          children: [
+            HeaderBodyAccount(),
+            SizedBox(height: size.height * 0.05),
+            Container(
+              height: size.height * 0.5,
+              margin: EdgeInsets.symmetric(horizontal: 16),
+              child: MenuAccount(),
+            ),
+          ],
+        ));
   }
 }
 
@@ -133,19 +134,7 @@ class HeaderBodyAccount extends StatelessWidget {
               LocaleKeys.account,
               style: GoogleFonts.poppins(fontSize: 22, color: Colors.white),
             ).tr(),
-            Container(
-              height: 134,
-              width: 134,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-              ),
-              child: ClipOval(
-                child: Image.asset(
-                  "assets/images/cipung.png",
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
+            ProfileUser()
           ],
         ),
       ),
