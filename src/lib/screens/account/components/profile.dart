@@ -94,7 +94,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 // Setelah berhasil re-authenticate, update password baru
                 await user?.updatePassword(passwordController.text);
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Katasandi berhasil diperbarui!')),
+                  SnackBar(
+                      content: Text(LocaleKeys.alertChangePasswordSucces).tr()),
                 );
               } catch (e) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -106,7 +107,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Kata sandi tidak cocok!'),
+                content: Text(LocaleKeys.alertWrongPassword).tr(),
               ),
             );
           }
@@ -114,7 +115,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Profil berhasil diperbarui!'),
+          content: Text(LocaleKeys.alertUpdate).tr(),
         ),
       );
     } catch (e) {
@@ -138,12 +139,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Masukkan Kata Sandi Lama Anda'),
+          title: Text(LocaleKeys.alertEnterPassword.tr()),
           content: TextField(
             controller: passwordInputController,
             obscureText: true,
             decoration: InputDecoration(
-              hintText: 'Kata Sandi',
+              hintText: 'Password',
             ),
           ),
           actions: <Widget>[
@@ -202,7 +203,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       keyboardType: TextInputType.emailAddress,
                     ),
                     FormAccount(
-                      title: 'Password',
+                      title: LocaleKeys.changePassword,
                       obscureText: true,
                       readOnly: false,
                       controller: passwordController,

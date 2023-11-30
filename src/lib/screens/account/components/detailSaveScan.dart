@@ -55,25 +55,25 @@ class DetailSaveScanScreen extends StatelessWidget {
                     height: 45,
                     width: 141),
                 RoundedButton(
-                    text: 'Delete',
+                    text: LocaleKeys.delete.tr(),
                     press: () {
                       showDialog(
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            title: Text('Delete this item?'),
+                            title: Text(LocaleKeys.alertDelete).tr(),
                             actions: [
                               TextButton(
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
-                                  child: Text('No')),
+                                  child: Text(LocaleKeys.no).tr()),
                               TextButton(
                                   onPressed: () {
                                     deleteScan(context);
                                     Navigator.pop(context);
                                   },
-                                  child: Text('Yes'))
+                                  child: Text(LocaleKeys.yes).tr())
                             ],
                           );
                         },

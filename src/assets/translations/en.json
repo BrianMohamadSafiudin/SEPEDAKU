@@ -1,10 +1,8 @@
 {
     "title": "MotoRent Malang City",
-    "subtitle":
-        "innovative motorcycle rental application designed to make your travels effortless",
+    "subtitle": "innovative motorcycle rental application designed to make your travels effortless",
     "login": "Login",
     "register": "Register",
-
     "titleLogin": "Login",
     "subtitleLogin": "Welcome Back!",
     "forgotPassword": "Forgot your password?",
@@ -13,15 +11,12 @@
     "loginwithgoogle": "Login with google",
     "donthaveaccount": "Don't have an account?",
     "signup": "Sign Up",
-
     "titleRegister": "Register",
     "subtitleRegister": "Create Your Account!",
     "alreadyhaveaccount": "Already Have Account?",
     "orderby": "Ordered By",
-
     "welcome": "Welcome,",
     "rentinprogress": "Rent In Progress",
-
     "transactions": "Transactions",
     "search": "Search...",
     "rentalNow": "Rental Now",
@@ -34,13 +29,23 @@
     "requestHelm": "Request Helm",
     "totalPayment": "Total Payment",
     "checkoutNow": "Checkout Now",
-
     "account": "Account",
     "editProfile": "Edit Profile",
     "changePicture": "Change Picture",
     "username": "Username",
+    "changePassword": "Change Password",
     "confirmPassword": "Confirm Password",
+    "alertChangePasswordSucces": "Password updated successfully!",
+    "alertWrongPassword": "Passwords do not match!",
+    "alertEnterPassword": "Enter Your Old Password",
     "update": "Update",
+    "alertUpdate": "Profile updated successfully!",
+    "noImage": "No Image Selected",
+    "pleaseCapture": "Please capture or select an image before proceeding.",
+    "delete": "Delete",
+    "alertDelete": "Delete this driver license data?",
+    "yes": "Yes",
+    "no": "No",
     "scanSIM": "Scan Driver License",
     "licenseDriver": "Driving License",
     "numberSIM": "Driver License Number",

@@ -66,28 +66,28 @@ class _ScanScreenState extends State<ScanScreen> {
 
     try {
       XFile file = await controller.takePicture();
-        CroppedFile? croppedFile = await ImageCropper().cropImage(
-          sourcePath: file.path,
-          aspectRatioPresets: [
-            CropAspectRatioPreset.square,
-            CropAspectRatioPreset.ratio3x2,
-            CropAspectRatioPreset.original,
-            CropAspectRatioPreset.ratio4x3,
-            CropAspectRatioPreset.ratio16x9
-          ],
-          uiSettings: [
-            AndroidUiSettings(
-                toolbarTitle: LocaleKeys.crop.tr(),
-                toolbarColor: primaryColor,
-                toolbarWidgetColor: Colors.white,
-                initAspectRatio: CropAspectRatioPreset.original,
-                lockAspectRatio: false),
-          ],
-        );
-        if (croppedFile != null) {
-          setState(() {
-            imageFile = XFile(croppedFile.path);
-          });
+      CroppedFile? croppedFile = await ImageCropper().cropImage(
+        sourcePath: file.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: LocaleKeys.crop.tr(),
+              toolbarColor: primaryColor,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false),
+        ],
+      );
+      if (croppedFile != null) {
+        setState(() {
+          imageFile = XFile(croppedFile.path);
+        });
       }
     } catch (e) {
       print("Error taking picture: $e");
@@ -232,9 +232,8 @@ class _ScanScreenState extends State<ScanScreen> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text("No Image Selected"),
-                          content: Text(
-                              "Please capture or select an image before proceeding."),
+                          title: Text(LocaleKeys.noImage).tr(),
+                          content: Text(LocaleKeys.pleaseCapture).tr(),
                           actions: [
                             TextButton(
                               onPressed: () {
