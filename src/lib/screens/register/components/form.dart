@@ -1,5 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sepedaku/auth.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -94,10 +95,58 @@ class _FormRegisterState extends State<FormRegister> {
     return Text(errorMessage == '' ? '' : 'Hmm? $errorMessage');
   }
 
+  bool isLoading = false;
+
   Widget _submitButton() {
-    return ElevatedButton(
-      onPressed: registerWithEmailAndPassword,
-      child: Text('Register'),
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 500),
+      height: isLoading ? 48 : null, // Set a fixed height when loading
+      child: ElevatedButton(
+        onPressed: () {
+          setState(() {
+            isLoading = true; // Set loading state to true
+          });
+
+          registerWithEmailAndPassword().then((isRegistrationSuccessful) {
+            setState(() {
+              isLoading = false; // Set loading state to false
+            });
+
+            if (isRegistrationSuccessful) {
+              // Navigasi ke DashboardScreen jika pendaftaran berhasil
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return DashboardScreen();
+              }));
+            } else {
+              // Tampilkan pesan kesalahan jika pendaftaran gagal
+              if (errorMessage != null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(errorMessage ??
+                        "Registration failed. Please check your credentials."),
+                  ),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                        "Registration failed. Please check your credentials."),
+                  ),
+                );
+              }
+            }
+          }).catchError((error) {
+            // Handle error jika ada kesalahan lainnya (opsional)
+          });
+        },
+        child: isLoading
+            ? SpinKitCircle(
+                // Change SpinKitCircle to your preferred spinner
+                color: Colors.white,
+                size: 28.0,
+              )
+            : Text('Register'),
+      ),
     );
   }
 
@@ -125,13 +174,11 @@ class _FormRegisterState extends State<FormRegister> {
               press: () {
                 registerWithEmailAndPassword().then((isRegistrationSuccessful) {
                   if (isRegistrationSuccessful) {
-                    // Navigasi ke DashboardScreen jika pendaftaran berhasil
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                       return DashboardScreen();
                     }));
                   } else {
-                    // Tampilkan pesan kesalahan jika pendaftaran gagal
                     if (errorMessage != null) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -149,7 +196,7 @@ class _FormRegisterState extends State<FormRegister> {
                     }
                   }
                 }).catchError((error) {
-                  // Handle error jika ada kesalahan lainnya (opsional)
+                  // Handle error if there's an issue with the registration process
                 });
               },
               color: Color(0xff1F41BB),
