@@ -21,7 +21,7 @@ class SimProvider extends ChangeNotifier {
             .collection('sim')
             .doc(user.uid)
             .collection('simUser');
-        await simCollectionRef.add(sim.toMap());
+        await simCollectionRef.doc().set(sim.toMap());
       } else {
         print('User not authenticated');
       }

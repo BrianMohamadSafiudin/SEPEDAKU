@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:provider/provider.dart';
 import 'package:sepedaku/components/color.dart';
 import 'package:sepedaku/components/locale/locale_keys.g.dart';
@@ -33,6 +33,91 @@ class _DetailScanScreenState extends State<DetailScanScreen> {
   final TextEditingController workController = TextEditingController();
   final TextEditingController domisiliController = TextEditingController();
   final TextEditingController simPeriodController = TextEditingController();
+
+  Future<void> _recognizeText(String imagePath) async {
+    final inputImage = InputImage.fromFilePath(imagePath);
+    final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
+
+    try {
+      final RecognizedText recognizedText =
+          await textRecognizer.processImage(inputImage);
+
+      String extractedText = recognizedText.text;
+
+      print(recognizedText.text);
+
+      List<String> textSegments = extractedText.split('\n');
+
+      for (String segment in textSegments) {
+        if (segment.contains(RegExp(r'C'))) {
+          licenseDriverController.text = segment.trim();
+        } else if (segment
+            .contains(RegExp(r'\b\d{4}\b-\b\d{4}\b-\b\d{5,}\b'))) {
+          simNumberController.text = segment.trim();
+        } else if (segment.contains('1.')) {
+          List<String> nameSegments = segment.split('.');
+          if (nameSegments.length > 1) {
+            String name = nameSegments[1].trim();
+            nameController.text = name;
+          }
+        } else if (segment.contains('2.')) {
+          List<String> dateBirthSegments = segment.split('.');
+          if (dateBirthSegments.length > 1) {
+            String dateBirth = dateBirthSegments[1].trim();
+            dateBirthController.text = dateBirth;
+          }
+        } else if (segment.contains(RegExp(r'PRIA|WANITA'))) {
+          List<String> genderSegments = segment.split(RegExp(r'-+'));
+          if (genderSegments.length > 1) {
+            String gender = genderSegments[1].trim();
+            genderController.text = gender;
+          } else {
+            genderController.text = segment.trim();
+          }
+        } else if (segment.contains(RegExp(r'JL'))) {
+          String address = '';
+          if (segment.contains(RegExp(r'4\.'))) {
+            address = segment.split(RegExp(r'4\.'))[1].trim();
+            if (textSegments.indexOf(segment) + 1 < textSegments.length &&
+                textSegments[textSegments.indexOf(segment) + 1]
+                    .contains(RegExp(r'RT|RW'))) {
+              address +=
+                  ', ${textSegments[textSegments.indexOf(segment) + 1].trim()}';
+            }
+            if (textSegments.indexOf(segment) + 2 < textSegments.length &&
+                textSegments[textSegments.indexOf(segment) + 2]
+                    .contains(RegExp(r'KOTA'))) {
+              address +=
+                  ', ${textSegments[textSegments.indexOf(segment) + 2].trim()}';
+            }
+          }
+          addressController.text = address;
+        } else if (segment.contains('5.')) {
+          workController.text = segment.split('.')[1].trim();
+        } else if (segment.contains('6.')) {
+          domisiliController.text = segment.split('.')[1].trim();
+        } else if (segment.contains(RegExp(r'\b\d{2}\b-\b\d{2}\b-\b\d{4}\b'))) {
+          simPeriodController.text = segment.trim();
+        }
+      }
+
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (error) {
+      print("Error recognizing text: $error");
+    } finally {
+      textRecognizer.close();
+      print('selesai');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _recognizeText(widget.imageSim!.path);
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -101,11 +186,6 @@ class _DetailScanScreenState extends State<DetailScanScreen> {
 
                         if (user != null) {
                           try {
-                            var simCollectionRef = FirebaseFirestore.instance
-                                .collection('sim')
-                                .doc(user.uid)
-                                .collection('simUser');
-                            var newSimDocRef = simCollectionRef.doc();
                             SimModel sim = SimModel(
                               simImage: widget.imageSim!.path,
                               driverLicense: licenseDriverController.text,
@@ -119,7 +199,7 @@ class _DetailScanScreenState extends State<DetailScanScreen> {
                               simPeriod: simPeriodController.text,
                             );
 
-                            await newSimDocRef.set(sim.toMap());
+                            savedSimProvider.addSimToFirebase(sim);
                             savedSimProvider.addSim(sim);
 
                             Navigator.pushReplacement(
