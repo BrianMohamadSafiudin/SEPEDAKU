@@ -14,10 +14,25 @@ import 'package:sepedaku/screens/account/components/saveScan.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class DetailScanScreen extends StatelessWidget {
+class DetailScanScreen extends StatefulWidget {
   final XFile? imageSim;
   const DetailScanScreen({super.key, this.imageSim});
 
+  @override
+  State<DetailScanScreen> createState() => _DetailScanScreenState();
+}
+
+class _DetailScanScreenState extends State<DetailScanScreen> {
+  bool _isLoading = false;
+  final TextEditingController licenseDriverController = TextEditingController();
+  final TextEditingController simNumberController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController dateBirthController = TextEditingController();
+  final TextEditingController genderController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
+  final TextEditingController workController = TextEditingController();
+  final TextEditingController domisiliController = TextEditingController();
+  final TextEditingController simPeriodController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -29,12 +44,22 @@ class DetailScanScreen extends StatelessWidget {
             Container(
                 margin: EdgeInsets.only(bottom: 12),
                 height: size.height * 0.3,
-                child: imageSim != null
-                    ? Image.file(File(imageSim!.path))
+                child: widget.imageSim != null
+                    ? Image.file(File(widget.imageSim!.path))
                     : Center(child: Text('Tidak ada gambar!'))),
             Container(
               height: size.height * 0.53,
-              child: FormScan(),
+              child: FormScan(
+                licenseDriverController: licenseDriverController,
+                simNumberController: simNumberController,
+                nameController: nameController,
+                dateBirthController: dateBirthController,
+                addressController: addressController,
+                genderController: genderController,
+                workController: workController,
+                domisiliController: domisiliController,
+                simPeriodController: simPeriodController,
+              ),
             ),
           ],
         ),
@@ -53,52 +78,73 @@ class DetailScanScreen extends StatelessWidget {
                   textColor: Colors.black,
                   height: 45,
                   width: 141),
-              RoundedButton(
-                  text: LocaleKeys.save,
-                  press: () async {
-                    var savedSimProvider =
-                        Provider.of<SimProvider>(context, listen: false);
-                    final user = FirebaseAuth.instance.currentUser;
+              _isLoading
+                  ? ElevatedButton(
+                      onPressed: null,
+                      child: CircularProgressIndicator(),
+                      style: ElevatedButton.styleFrom(
+                          fixedSize: Size(141, 45),
+                          backgroundColor: primaryColor,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10))),
+                    )
+                  : RoundedButton(
+                      text: LocaleKeys.save,
+                      press: () async {
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        var savedSimProvider =
+                            Provider.of<SimProvider>(context, listen: false);
+                        final user = FirebaseAuth.instance.currentUser;
 
-                    if (user != null) {
-                      try {
-                        var simCollectionRef = FirebaseFirestore.instance
-                            .collection('sim')
-                            .doc(user.uid)
-                            .collection('simUser');
-                        var newSimDocRef = simCollectionRef.doc();
-                        SimModel sim = SimModel(
-                          simImage: imageSim!.path,
-                          driverLicense: 'C',
-                          simNumber: '1002-9108-2828',
-                          name: 'Edward Sunan Hutabarat',
-                          dateBirth: 'Batam, 30-08-1999',
-                          gender: 'Pria',
-                          address: 'Kampung Seraya',
-                          work: 'Wiraswasta',
-                          simPeriod: '12 - 06 - 2028',
-                        );
+                        if (user != null) {
+                          try {
+                            var simCollectionRef = FirebaseFirestore.instance
+                                .collection('sim')
+                                .doc(user.uid)
+                                .collection('simUser');
+                            var newSimDocRef = simCollectionRef.doc();
+                            SimModel sim = SimModel(
+                              simImage: widget.imageSim!.path,
+                              driverLicense: licenseDriverController.text,
+                              simNumber: simNumberController.text,
+                              name: nameController.text,
+                              dateBirth: dateBirthController.text,
+                              gender: genderController.text,
+                              address: addressController.text,
+                              work: workController.text,
+                              domisili: domisiliController.text,
+                              simPeriod: simPeriodController.text,
+                            );
 
-                        await newSimDocRef.set(sim.toMap());
-                        savedSimProvider.addSim(sim);
+                            await newSimDocRef.set(sim.toMap());
+                            savedSimProvider.addSim(sim);
 
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) {
-                            return SaveScanScreen();
-                          }),
-                        );
-                      } catch (e) {
-                        print('Error saving to Firestore: $e');
-                      }
-                    } else {
-                      print('User not authenticated');
-                    }
-                  },
-                  color: primaryColor,
-                  textColor: Colors.white,
-                  height: 45,
-                  width: 141),
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) {
+                                return SaveScanScreen();
+                              }),
+                            );
+                          } catch (e) {
+                            print('Error saving to Firestore: $e');
+                            setState(() {
+                              _isLoading = false;
+                            });
+                          }
+                        } else {
+                          print('User not authenticated');
+                        }
+                        setState(() {
+                          _isLoading = false;
+                        });
+                      },
+                      color: primaryColor,
+                      textColor: Colors.white,
+                      height: 45,
+                      width: 141),
             ],
           )),
     );
@@ -106,8 +152,26 @@ class DetailScanScreen extends StatelessWidget {
 }
 
 class FormScan extends StatelessWidget {
+  final TextEditingController licenseDriverController;
+  final TextEditingController simNumberController;
+  final TextEditingController nameController;
+  final TextEditingController dateBirthController;
+  final TextEditingController genderController;
+  final TextEditingController addressController;
+  final TextEditingController workController;
+  final TextEditingController domisiliController;
+  final TextEditingController simPeriodController;
   const FormScan({
     super.key,
+    required this.licenseDriverController,
+    required this.simNumberController,
+    required this.nameController,
+    required this.dateBirthController,
+    required this.genderController,
+    required this.addressController,
+    required this.workController,
+    required this.domisiliController,
+    required this.simPeriodController,
   });
 
   @override
@@ -120,43 +184,53 @@ class FormScan extends StatelessWidget {
           Container(
             height: size.height * 0.1,
             child: ChildInForm(
-                title: LocaleKeys.licenseDriver, textController: 'C'),
+                title: LocaleKeys.licenseDriver,
+                textController: licenseDriverController.text),
           ),
           Container(
             height: size.height * 0.1,
             child: ChildInForm(
-                title: LocaleKeys.numberSIM, textController: '1002-9108-2828'),
-          ),
-          Container(
-            height: size.height * 0.1,
-            child:
-                ChildInForm(title: LocaleKeys.name, textController: 'Edward'),
+                title: LocaleKeys.numberSIM,
+                textController: simNumberController.text),
           ),
           Container(
             height: size.height * 0.1,
             child: ChildInForm(
-                title: LocaleKeys.birth, textController: 'Batam, 30-08-1999'),
-          ),
-          Container(
-            height: size.height * 0.1,
-            child:
-                ChildInForm(title: LocaleKeys.gender, textController: 'Pria'),
+                title: LocaleKeys.name, textController: nameController.text),
           ),
           Container(
             height: size.height * 0.1,
             child: ChildInForm(
-                title: LocaleKeys.address, textController: 'Kampung Seraya'),
+                title: LocaleKeys.birth,
+                textController: dateBirthController.text),
           ),
           Container(
             height: size.height * 0.1,
             child: ChildInForm(
-                title: LocaleKeys.job, textController: 'Wiraswasta'),
+                title: LocaleKeys.gender,
+                textController: genderController.text),
+          ),
+          Container(
+            height: size.height * 0.1,
+            child: ChildInForm(
+                title: LocaleKeys.address,
+                textController: addressController.text),
+          ),
+          Container(
+            height: size.height * 0.1,
+            child: ChildInForm(
+                title: LocaleKeys.job, textController: workController.text),
+          ),
+          Container(
+            height: size.height * 0.1,
+            child: ChildInForm(
+                title: 'Domisili', textController: domisiliController.text),
           ),
           Container(
             height: size.height * 0.1,
             child: ChildInForm(
                 title: LocaleKeys.driverLicensePeriod,
-                textController: '12-06-2028'),
+                textController: simPeriodController.text),
           ),
         ],
       ),

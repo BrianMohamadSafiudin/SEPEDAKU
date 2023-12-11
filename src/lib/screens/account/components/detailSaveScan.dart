@@ -35,7 +35,9 @@ class DetailSaveScanScreen extends StatelessWidget {
               ),
               Container(
                 height: size.height * 0.53,
-                child: FormScan(),
+                child: FormScan(
+                  currentIndex: currentIndex,
+                ),
               ),
             ],
           ),
@@ -89,61 +91,80 @@ class DetailSaveScanScreen extends StatelessWidget {
 }
 
 class FormScan extends StatelessWidget {
-  const FormScan({
-    super.key,
-  });
+  final int currentIndex;
+  const FormScan({super.key, required this.currentIndex});
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Form(
-        child: SingleChildScrollView(
-      child: Column(
-        children: [
-          Container(
-            height: size.height * 0.1,
-            child: ChildInForm(
-                title: LocaleKeys.licenseDriver, textController: 'C'),
-          ),
-          Container(
-            height: size.height * 0.1,
-            child: ChildInForm(
-                title: LocaleKeys.numberSIM, textController: '1002-9108-2828'),
-          ),
-          Container(
-            height: size.height * 0.1,
-            child:
-                ChildInForm(title: LocaleKeys.name, textController: 'Edward'),
-          ),
-          Container(
-            height: size.height * 0.1,
-            child: ChildInForm(
-                title: LocaleKeys.birth, textController: 'Batam, 30-08-1999'),
-          ),
-          Container(
-            height: size.height * 0.1,
-            child:
-                ChildInForm(title: LocaleKeys.gender, textController: 'Pria'),
-          ),
-          Container(
-            height: size.height * 0.1,
-            child: ChildInForm(
-                title: LocaleKeys.address, textController: 'Kampung Seraya'),
-          ),
-          Container(
-            height: size.height * 0.1,
-            child: ChildInForm(
-                title: LocaleKeys.job, textController: 'Wiraswasta'),
-          ),
-          Container(
-            height: size.height * 0.1,
-            child: ChildInForm(
-                title: LocaleKeys.driverLicensePeriod,
-                textController: '12-06-2028'),
-          ),
-        ],
-      ),
-    ));
+    return Consumer<SimProvider>(builder: (context, simProvider, _) {
+      return Form(
+          child: SingleChildScrollView(
+        child: Column(
+          children: [
+            // Text(currentIndex.toString()),
+            Container(
+              height: size.height * 0.1,
+              child: ChildInForm(
+                  title: LocaleKeys.licenseDriver,
+                  textController:
+                      simProvider.savedSims[currentIndex].driverLicense),
+            ),
+            Container(
+              height: size.height * 0.1,
+              child: ChildInForm(
+                  title: LocaleKeys.numberSIM,
+                  textController:
+                      simProvider.savedSims[currentIndex].simNumber),
+            ),
+            Container(
+              height: size.height * 0.1,
+              child: ChildInForm(
+                  title: LocaleKeys.name,
+                  textController: simProvider.savedSims[currentIndex].name),
+            ),
+            Container(
+              height: size.height * 0.1,
+              child: ChildInForm(
+                  title: LocaleKeys.birth,
+                  textController:
+                      simProvider.savedSims[currentIndex].dateBirth),
+            ),
+            Container(
+              height: size.height * 0.1,
+              child: ChildInForm(
+                  title: LocaleKeys.gender,
+                  textController: simProvider.savedSims[currentIndex].gender),
+            ),
+            Container(
+              height: size.height * 0.1,
+              child: ChildInForm(
+                  title: LocaleKeys.address,
+                  textController: simProvider.savedSims[currentIndex].address),
+            ),
+            Container(
+              height: size.height * 0.1,
+              child: ChildInForm(
+                  title: LocaleKeys.job,
+                  textController: simProvider.savedSims[currentIndex].work),
+            ),
+            Container(
+              height: size.height * 0.1,
+              child: ChildInForm(
+                  title: 'Domisili',
+                  textController: simProvider.savedSims[currentIndex].domisili),
+            ),
+            Container(
+              height: size.height * 0.1,
+              child: ChildInForm(
+                  title: LocaleKeys.driverLicensePeriod,
+                  textController:
+                      simProvider.savedSims[currentIndex].simPeriod),
+            ),
+          ],
+        ),
+      ));
+    });
   }
 }
 

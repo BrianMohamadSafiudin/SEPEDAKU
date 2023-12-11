@@ -7,6 +7,7 @@ class SimModel {
   final String gender;
   final String address;
   final String work;
+  final String domisili;
   final String simPeriod;
 
   SimModel({
@@ -18,6 +19,7 @@ class SimModel {
     required this.gender,
     required this.address,
     required this.work,
+    required this.domisili,
     required this.simPeriod,
   });
 
@@ -31,6 +33,7 @@ class SimModel {
       'gender': gender,
       'address': address,
       'work': work,
+      'domisili': domisili,
       'simPeriod': simPeriod
     };
   }

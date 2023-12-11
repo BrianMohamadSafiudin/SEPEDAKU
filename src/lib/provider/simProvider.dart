@@ -13,6 +13,23 @@ class SimProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> addSimToFirebase(SimModel sim) async {
+    try {
+      var user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        var simCollectionRef = FirebaseFirestore.instance
+            .collection('sim')
+            .doc(user.uid)
+            .collection('simUser');
+        await simCollectionRef.add(sim.toMap());
+      } else {
+        print('User not authenticated');
+      }
+    } catch (e) {
+      print('Error saving to Firestore: $e');
+    }
+  }
+
   void removeSim(int index) async {
     try {
       final user = FirebaseAuth.instance.currentUser;
@@ -56,6 +73,7 @@ class SimProvider extends ChangeNotifier {
             gender: doc['gender'],
             work: doc['work'],
             driverLicense: doc['driverLicense'],
+            domisili: doc['domisili'],
             simPeriod: doc['simPeriod']);
       }).toList();
 

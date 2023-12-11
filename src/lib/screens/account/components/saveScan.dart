@@ -60,18 +60,20 @@ class SaveScanScreen extends StatelessWidget {
                             child: Container(
                               margin: EdgeInsets.all(16),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Image.file(File(savedSimProvider
-                                      .savedSims[index].simImage)),
+                                  Expanded(
+                                    child: Container(
+                                      child: Image.file(File(savedSimProvider
+                                          .savedSims[index].simImage)),
+                                    ),
+                                  ),
                                   Expanded(
                                     child: Container(
                                       margin:
                                           EdgeInsets.symmetric(horizontal: 16),
                                       child: Text(
-                                        'SIM Edward Sunan Hutabarat',
+                                        savedSimProvider.savedSims[index].name,
                                         style: GoogleFonts.poppins(
                                             fontSize: 18, color: Colors.black),
                                       ),
