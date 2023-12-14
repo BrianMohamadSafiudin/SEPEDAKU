@@ -6,6 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:sepedaku/components/locale/locale_keys.g.dart';
 import 'package:sepedaku/components/rounded_button.dart';
 import 'package:sepedaku/screens/dashboard/dashboard_screen.dart';
+import 'package:sepedaku/screens/login/components/forgot_password_screen.dart'; 
 import 'package:flutter/material.dart';
 
 class FormLogin extends StatefulWidget {
@@ -113,7 +114,11 @@ class _FormLoginState extends State<FormLogin> {
             Container(
               alignment: Alignment(1, 1),
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return ForgotPasswordScreen();
+                  }));
+                },
                 child: Text(
                   LocaleKeys.forgotPassword,
                   style: GoogleFonts.poppins(
