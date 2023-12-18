@@ -32,7 +32,7 @@
     "hintFinishDate": "Masukkan Tanggal Selesai Rental...",
     "requestHelm": "Request Helm",
     "totalPayment": "Total Pembayaran",
-    "checkoutNow": "Checkout Now",
+    "checkoutNow": "Checkout Sekarang",
 
     "account": "Akun",
     "editProfile": "Edit Profil",
@@ -64,5 +64,11 @@
     "back": "Kembali",
     "simSaved": "SIM Saved",
     "crop": "Potong gambar kamu",
-    "logout": "Keluar"
+    "logout": "Keluar",
+    "alertEmptyField": "Lengkapi Field yang kosong!",
+    "alertSuccessSave": "SIM berhasil di save!!",
+    "subAlertSuccessSave": "SIM dengan nama " ,
+    "subAlertSuccessSave2": " sudah tersimpan",
+    "alertAlreadySaved": "SIM SUDAH PERNAH DI SAVE!!!",
+    "alertSearchAnotherSim": "Silahkan cari SIM yang lain"
 }

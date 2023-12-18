@@ -62,5 +62,11 @@ abstract class  LocaleKeys {
   static const simSaved = 'simSaved';
   static const crop = 'crop';
   static const logout = 'logout';
+  static const alertEmptyField = 'alertEmptyField';
+  static const alertSuccessSave = 'alertSuccessSave';
+  static const subAlertSuccessSave = 'subAlertSuccessSave';
+  static const subAlertSuccessSave2 = 'subAlertSuccessSave2';
+  static const alertAlreadySaved = 'alertAlreadySaved';
+  static const alertSearchAnotherSim = 'alertSearchAnotherSim';
 
 }

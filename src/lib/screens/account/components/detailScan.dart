@@ -74,7 +74,7 @@ class _DetailScanScreenState extends State<DetailScanScreen> {
           } else {
             genderController.text = segment.trim();
           }
-        } else if (segment.contains(RegExp(r'JL'))) {
+        } else if (segment.contains(RegExp(r'JL|RT'))) {
           String address = '';
           if (segment.contains(RegExp(r'4\.'))) {
             address = segment.split(RegExp(r'4\.'))[1].trim();
@@ -118,35 +118,49 @@ class _DetailScanScreenState extends State<DetailScanScreen> {
     _recognizeText(widget.imageSim!.path);
   }
 
+  bool _areFieldsEmpty() {
+    return licenseDriverController.text.isEmpty ||
+        simNumberController.text.isEmpty ||
+        nameController.text.isEmpty ||
+        dateBirthController.text.isEmpty ||
+        genderController.text.isEmpty ||
+        addressController.text.isEmpty ||
+        workController.text.isEmpty ||
+        domisiliController.text.isEmpty ||
+        simPeriodController.text.isEmpty;
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Container(
-                margin: EdgeInsets.only(bottom: 12),
-                height: size.height * 0.3,
-                child: widget.imageSim != null
-                    ? Image.file(File(widget.imageSim!.path))
-                    : Center(child: Text('Tidak ada gambar!'))),
-            Container(
-              height: size.height * 0.53,
-              child: FormScan(
-                licenseDriverController: licenseDriverController,
-                simNumberController: simNumberController,
-                nameController: nameController,
-                dateBirthController: dateBirthController,
-                addressController: addressController,
-                genderController: genderController,
-                workController: workController,
-                domisiliController: domisiliController,
-                simPeriodController: simPeriodController,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              Container(
+                  margin: EdgeInsets.only(bottom: 12),
+                  height: size.height * 0.3,
+                  child: widget.imageSim != null
+                      ? Image.file(File(widget.imageSim!.path))
+                      : Center(child: Text('Tidak ada gambar!'))),
+              Container(
+                height: size.height * 0.53,
+                child: FormScan(
+                  licenseDriverController: licenseDriverController,
+                  simNumberController: simNumberController,
+                  nameController: nameController,
+                  dateBirthController: dateBirthController,
+                  addressController: addressController,
+                  genderController: genderController,
+                  workController: workController,
+                  domisiliController: domisiliController,
+                  simPeriodController: simPeriodController,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomAppBar(
@@ -184,7 +198,7 @@ class _DetailScanScreenState extends State<DetailScanScreen> {
                             Provider.of<SimProvider>(context, listen: false);
                         final user = FirebaseAuth.instance.currentUser;
 
-                        if (user != null) {
+                        if (user != null && mounted) {
                           try {
                             SimModel sim = SimModel(
                               simImage: widget.imageSim!.path,
@@ -199,27 +213,100 @@ class _DetailScanScreenState extends State<DetailScanScreen> {
                               simPeriod: simPeriodController.text,
                             );
 
-                            savedSimProvider.addSimToFirebase(sim);
-                            savedSimProvider.addSim(sim);
+                            bool isSimNumberSaved = savedSimProvider
+                                .isSimNumberSaved(simNumberController.text);
 
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(builder: (context) {
-                                return SaveScanScreen();
-                              }),
-                            );
+                            if (!isSimNumberSaved) {
+                              if (_areFieldsEmpty()) {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    content:
+                                        Text(LocaleKeys.alertEmptyField.tr()),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('Ok'))
+                                    ],
+                                  ),
+                                );
+                              } else {
+                                savedSimProvider.addSimToFirebase(sim);
+                                savedSimProvider.addSim(sim);
+
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SaveScanScreen()),
+                                );
+                                if (mounted) {
+                                  await Future.delayed(
+                                      Duration(milliseconds: 500),
+                                      () => showDialog(
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                              title: Text(LocaleKeys
+                                                  .alertSuccessSave
+                                                  .tr()),
+                                              content: Text(LocaleKeys
+                                                      .subAlertSuccessSave
+                                                      .tr() +
+                                                  nameController.text +
+                                                  LocaleKeys
+                                                      .subAlertSuccessSave2
+                                                      .tr()),
+                                              // 'SIM dengan nama ${nameController.text} sudah tersimpan'),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(context),
+                                                  child: Text('Yey!'),
+                                                ),
+                                              ],
+                                            ),
+                                          ));
+                                  print('dijalankan');
+                                }
+                              }
+                            } else {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title:
+                                        Text(LocaleKeys.alertAlreadySaved.tr()),
+                                    content: Text(
+                                        LocaleKeys.alertSearchAnotherSim.tr()),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text("OK"),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
                           } catch (e) {
                             print('Error saving to Firestore: $e');
-                            setState(() {
-                              _isLoading = false;
-                            });
+                            if (mounted) {
+                              setState(() {
+                                _isLoading = false;
+                              });
+                            }
                           }
                         } else {
                           print('User not authenticated');
                         }
-                        setState(() {
-                          _isLoading = false;
-                        });
+                        if (mounted) {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                        }
                       },
                       color: primaryColor,
                       textColor: Colors.white,
@@ -265,52 +352,49 @@ class FormScan extends StatelessWidget {
             height: size.height * 0.1,
             child: ChildInForm(
                 title: LocaleKeys.licenseDriver,
-                textController: licenseDriverController.text),
+                textController: licenseDriverController),
           ),
           Container(
             height: size.height * 0.1,
             child: ChildInForm(
                 title: LocaleKeys.numberSIM,
-                textController: simNumberController.text),
+                textController: simNumberController),
           ),
           Container(
             height: size.height * 0.1,
             child: ChildInForm(
-                title: LocaleKeys.name, textController: nameController.text),
+                title: LocaleKeys.name, textController: nameController),
           ),
           Container(
             height: size.height * 0.1,
             child: ChildInForm(
-                title: LocaleKeys.birth,
-                textController: dateBirthController.text),
+                title: LocaleKeys.birth, textController: dateBirthController),
           ),
           Container(
             height: size.height * 0.1,
             child: ChildInForm(
-                title: LocaleKeys.gender,
-                textController: genderController.text),
+                title: LocaleKeys.gender, textController: genderController),
           ),
           Container(
             height: size.height * 0.1,
             child: ChildInForm(
-                title: LocaleKeys.address,
-                textController: addressController.text),
+                title: LocaleKeys.address, textController: addressController),
           ),
           Container(
             height: size.height * 0.1,
             child: ChildInForm(
-                title: LocaleKeys.job, textController: workController.text),
+                title: LocaleKeys.job, textController: workController),
           ),
           Container(
             height: size.height * 0.1,
             child: ChildInForm(
-                title: 'Domisili', textController: domisiliController.text),
+                title: 'Domisili', textController: domisiliController),
           ),
           Container(
             height: size.height * 0.1,
             child: ChildInForm(
                 title: LocaleKeys.driverLicensePeriod,
-                textController: simPeriodController.text),
+                textController: simPeriodController),
           ),
         ],
       ),
@@ -319,15 +403,20 @@ class FormScan extends StatelessWidget {
 }
 
 class ChildInForm extends StatelessWidget {
-  final String title, textController;
+  final String title;
+  final TextEditingController textController;
+
   const ChildInForm({
-    super.key,
+    Key? key,
     required this.title,
     required this.textController,
   });
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController controller = TextEditingController(
+        text: textController.text.isNotEmpty ? textController.text : '');
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -336,9 +425,11 @@ class ChildInForm extends StatelessWidget {
           style: GoogleFonts.poppins(),
         ).tr(),
         TextFormField(
-          controller: TextEditingController(text: textController),
-          readOnly: true,
-        )
+          controller: controller,
+          onChanged: (newValue) {
+            textController.text = newValue;
+          },
+        ),
       ],
     );
   }

@@ -59,5 +59,11 @@
     "back": "Back",
     "simSaved": "Driver License Saved",
     "crop": "Crop your picture",
-    "logout": "Logout"
+    "logout": "Logout",
+    "alertEmptyField": "Fill in the empty field!",
+    "alertSuccessSave": "Great news! Your driver's license was successfully saved!",
+    "subAlertSuccessSave": "Driver's License with name " ,
+    "subAlertSuccessSave2": " has been saved",
+    "alertAlreadySaved": "The driver's license has already been saved!",
+    "alertSearchAnotherSim": "Please search for another driver's license"
 }

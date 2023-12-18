@@ -82,4 +82,10 @@ class SimProvider extends ChangeNotifier {
       print('Error fetching saved sims: $error');
     }
   }
+
+  bool isSimNumberSaved(String simNumber) {
+    List<String> savedSimNumber =
+        _savedSims.map((sim) => sim.simNumber).toList();
+    return savedSimNumber.contains(simNumber);
+  }
 }

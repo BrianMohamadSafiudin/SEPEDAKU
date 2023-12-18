@@ -75,7 +75,13 @@ class CodegenLoader extends AssetLoader{
   "back": "Back",
   "simSaved": "Driver License Saved",
   "crop": "Crop your picture",
-  "logout": "Logout"
+  "logout": "Logout",
+  "alertEmptyField": "Fill in the empty field!",
+  "alertSuccessSave": "Great news! Your driver's license was successfully saved!",
+  "subAlertSuccessSave": "Driver's License with name ",
+  "subAlertSuccessSave2": " has been saved",
+  "alertAlreadySaved": "The driver's license has already been saved!",
+  "alertSearchAnotherSim": "Please search for another driver's license"
 };
 static const Map<String,dynamic> id = {
   "title": "MotoRent Kota Malang",
@@ -107,7 +113,7 @@ static const Map<String,dynamic> id = {
   "hintFinishDate": "Masukkan Tanggal Selesai Rental...",
   "requestHelm": "Request Helm",
   "totalPayment": "Total Pembayaran",
-  "checkoutNow": "Checkout Now",
+  "checkoutNow": "Checkout Sekarang",
   "account": "Akun",
   "editProfile": "Edit Profil",
   "changePicture": "Ubah Gambar",
@@ -138,7 +144,13 @@ static const Map<String,dynamic> id = {
   "back": "Kembali",
   "simSaved": "SIM Saved",
   "crop": "Potong gambar kamu",
-  "logout": "Keluar"
+  "logout": "Keluar",
+  "alertEmptyField": "Lengkapi Field yang kosong!",
+  "alertSuccessSave": "SIM berhasil di save!!",
+  "subAlertSuccessSave": "SIM dengan nama ",
+  "subAlertSuccessSave2": " sudah tersimpan",
+  "alertAlreadySaved": "SIM SUDAH PERNAH DI SAVE!!!",
+  "alertSearchAnotherSim": "Silahkan cari SIM yang lain"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"en": en, "id": id};
 }
