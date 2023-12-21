@@ -17,11 +17,12 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 14),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            ButtonSearch(), // Move the Search button to the top
+            // Add the search button
+            ButtonSearch(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -82,7 +83,6 @@ class GridItem extends StatelessWidget {
         itemBuilder: (context, index) {
           if (showManualFilter) {
             return buildFirstItem(context);
-            return buildSecondItem(context);
           } else {
             switch (index) {
               case 0:
