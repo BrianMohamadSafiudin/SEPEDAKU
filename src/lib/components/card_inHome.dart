@@ -22,7 +22,7 @@ class CardRentalProgress extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset(image),
+              Expanded(child: Image.asset(image)),
               Text(
                 name,
                 maxLines: 1,

@@ -1,61 +1,71 @@
-import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:sepedaku/components/button_search.dart';
+import 'package:sepedaku/components/color.dart';
+import 'package:sepedaku/model/motorModel.dart';
+import 'package:sepedaku/provider/motorProvider.dart';
 import 'package:sepedaku/screens/transactions/components/view_item.dart';
+import 'package:flutter/material.dart';
 
 class Body extends StatefulWidget {
-  const Body({Key? key}) : super(key: key);
+  const Body({super.key});
 
   @override
   State<Body> createState() => _BodyState();
 }
 
 class _BodyState extends State<Body> {
-  bool isKawasakiFilterSelected = false;
-  bool isYamahaFilterSelected = false;
+  bool isFilterVisible = false;
+  List<DocumentSnapshot> searchResults = [];
+  List<String> dropdownItems = [
+    'Semua',
+    'Matic',
+    'Manual',
+  ];
+  String? selectedOption;
+
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<MotorProvider>(context, listen: false).fetchMotor();
+  }
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 14),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            // Add the search button
-            ButtonSearch(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      isKawasakiFilterSelected = !isKawasakiFilterSelected;
-                    });
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: isKawasakiFilterSelected
-                        ? Colors.blue
-                        : Colors.white,
-                  ),
-                  child: Text('Manual'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      isYamahaFilterSelected = !isYamahaFilterSelected;
-                    });
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: isYamahaFilterSelected
-                        ? Colors.blue
-                        : Colors.white,
-                  ),
-                  child: Text('Matic'),
-                ),
-              ],
+            ButtonSearch(
+              onSearchCompleted: (List<DocumentSnapshot> results) {
+                setState(() {
+                  searchResults = results;
+                });
+              },
             ),
+            DropdownButton<String>(
+                padding: EdgeInsets.symmetric(vertical: 8),
+                hint: Text('Pilih Kategori..'),
+                value: selectedOption,
+                items:
+                    dropdownItems.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    selectedOption = newValue ?? '';
+                    print(selectedOption);
+                  });
+                }),
             GridItem(
-              showManualFilter: isKawasakiFilterSelected,
+              searchResults: searchResults,
+              selectedOption: selectedOption,
             ),
           ],
         ),
@@ -64,242 +74,177 @@ class _BodyState extends State<Body> {
   }
 }
 
-class GridItem extends StatelessWidget {
-  final bool showManualFilter;
+class GridItem extends StatefulWidget {
+  final List<DocumentSnapshot> searchResults;
+  final String? selectedOption;
+  const GridItem(
+      {super.key, required this.searchResults, required this.selectedOption});
 
-  const GridItem({Key? key, required this.showManualFilter}) : super(key: key);
+  @override
+  State<GridItem> createState() => _GridItemState();
+}
+
+class _GridItemState extends State<GridItem> {
+  List<MotorModel> displayedMotors = [];
+
+  @override
+  void initState() {
+    super.initState();
+    updateDisplayedMotors();
+  }
+
+  @override
+  void didUpdateWidget(covariant GridItem oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    updateDisplayedMotors();
+  }
+
+  void updateDisplayedMotors() {
+    final savedMotorProvider =
+        Provider.of<MotorProvider>(context, listen: false);
+    setState(() {
+      if (widget.searchResults.isEmpty) {
+        if (widget.selectedOption == 'Matic') {
+          displayedMotors = savedMotorProvider.savedMotors
+              .where((motor) => motor.jenisMotor == 'Matic')
+              .toList();
+        } else if (widget.selectedOption == 'Manual') {
+          displayedMotors = savedMotorProvider.savedMotors
+              .where((motor) => motor.jenisMotor == 'Manual')
+              .toList();
+        } else {
+          displayedMotors = savedMotorProvider.savedMotors;
+        }
+      } else {
+        displayedMotors.clear();
+        for (var result in widget.searchResults) {
+          var motorData = result.data() as Map<String, dynamic>;
+          var newMotor = MotorModel(
+            imageMotor: motorData['imageMotor'],
+            motor: motorData['motor'],
+            harga: motorData['harga'],
+            stok: motorData['stok'],
+            deskripsi: motorData['deskripsi'],
+            jenisMotor: motorData['jenisMotor'],
+          );
+          displayedMotors.add(newMotor);
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.69,
-      child: GridView.builder(
-        itemCount: showManualFilter ? 1 : 3,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 1,
-          childAspectRatio: 4,
-          mainAxisSpacing: 5,
-        ),
-        itemBuilder: (context, index) {
-          if (showManualFilter) {
-            return buildFirstItem(context);
-          } else {
-            switch (index) {
-              case 0:
-                return buildFirstItem(context);
-              case 1:
-                return buildSecondItem(context);
-              case 2:
-                return buildThirdItem(context);
-              default:
-                return Container();
-            }
-          }
-        },
-      ),
-    );
-  }
+    Size size = MediaQuery.of(context).size;
 
-
-  Widget buildFirstItem(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return ViewItemScreen();
-        }));
-      },
-      child: Card(
-        child: Container(
-          margin: EdgeInsets.all(16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Image.asset("assets/images/kawasaki.png"),
-              Column(
-                children: [
-                  Text("Kawasaki ZX 25R"),
-                  Text("N 9933 KL"),
-                ],
-              ),
-              Container(
-                height: 15,
-                width: 52,
-                decoration: BoxDecoration(
-                  border: Border.all(width: 0.2),
-                  borderRadius: BorderRadius.circular(15),
+    return SingleChildScrollView(
+      child: (widget.searchResults.isEmpty)
+          ? Container(
+              height: size.height * 0.69,
+              child: GridView.builder(
+                itemCount: displayedMotors.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 1,
+                  childAspectRatio: 4,
+                  mainAxisSpacing: 5,
                 ),
-                child: Text(
-                  "SIM C",
-                  textAlign: TextAlign.center,
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget buildSecondItem(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return ViewItemScreen2();
-        }));
-      },
-      child: Card(
-        child: Container(
-          margin: EdgeInsets.all(16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Image.asset("assets/images/Matic1.png"),
-              Column(
-                children: [
-                  Text("Yamaha Grand Filanos"),
-                  Text("N 3781 KL"),
-                ],
-              ),
-              Container(
-                height: 15,
-                width: 52,
-                decoration: BoxDecoration(
-                  border: Border.all(width: 0.2),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Text(
-                  "SIM C",
-                  textAlign: TextAlign.center,
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-Widget buildThirdItem(BuildContext context) {
-  return InkWell(
-    onTap: () {
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return ViewItemScreen3();
-      }));
-    },
-    child: Card(
-      child: Container(
-        margin: EdgeInsets.all(16),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.asset(
-                "assets/images/Matic2.png"), // Replace with the actual image path
-            Column(
-              children: [
-                Text("Yamaha XMax 250"),
-                Text("N 2645 KL"),
-              ],
-            ),
-            Container(
-              height: 15,
-              width: 52,
-              decoration: BoxDecoration(
-                border: Border.all(width: 0.2),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Text(
-                "SIM C",
-                textAlign: TextAlign.center,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return ViewItemScreen(index: index);
+                      }));
+                    },
+                    child: Card(
+                      child: Container(
+                        margin: EdgeInsets.all(16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Image.asset("${displayedMotors[index].imageMotor}"),
+                            Column(
+                              children: [
+                                Text(displayedMotors[index].motor),
+                                Spacer(),
+                                Text('Rp. ${displayedMotors[index].harga}')
+                              ],
+                            ),
+                            Container(
+                              height: 15,
+                              width: 52,
+                              decoration: BoxDecoration(
+                                border: Border.all(width: 0.2),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Text(
+                                "SIM C",
+                                textAlign: TextAlign.center,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ),
             )
-          ],
-        ),
-      ),
-    ),
-  );
-}
-
-Widget buildFourthItem(BuildContext context) {
-  return InkWell(
-    onTap: () {
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return ViewItemScreen3();
-      }));
-    },
-    child: Card(
-      child: Container(
-        margin: EdgeInsets.all(16),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.asset(
-                "assets/images/Matic2.png"), // Replace with the actual image path
-            Column(
-              children: [
-                Text("Yaamahaa XMax 2510"),
-                Text("N 2645 KL"),
-              ],
+          : Container(
+              height: size.height * 0.69,
+              child: GridView.builder(
+                itemCount: widget.searchResults.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 1,
+                  childAspectRatio: 4,
+                  mainAxisSpacing: 5,
+                ),
+                itemBuilder: (context, index) {
+                  var motorData = widget.searchResults[index].data()
+                      as Map<String, dynamic>;
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return ViewItemScreen(index: index);
+                      }));
+                    },
+                    child: Card(
+                      child: Container(
+                        margin: EdgeInsets.all(16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Image.asset("${motorData['imageMotor']}"),
+                            Column(
+                              children: [
+                                Text(motorData['motor']),
+                                Spacer(),
+                                Text('Rp. ${motorData['harga']}')
+                              ],
+                            ),
+                            Container(
+                              height: 15,
+                              width: 52,
+                              decoration: BoxDecoration(
+                                border: Border.all(width: 0.2),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Text(
+                                "SIM C",
+                                textAlign: TextAlign.center,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
-            Container(
-              height: 15,
-              width: 52,
-              decoration: BoxDecoration(
-                border: Border.all(width: 0.2),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Text(
-                "SIM C",
-                textAlign: TextAlign.center,
-              ),
-            )
-          ],
-        ),
-      ),
-    ),
-  );
-}
-
-Widget buildFifthItem(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return ViewItemScreen();
-        }));
-      },
-      child: Card(
-        child: Container(
-          margin: EdgeInsets.all(16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Image.asset("assets/images/kawasaki.png"),
-              Column(
-                children: [
-                  Text("Kawasaki ZX 25R"),
-                  Text("N 9933 KL"),
-                ],
-              ),
-              Container(
-                height: 15,
-                width: 52,
-                decoration: BoxDecoration(
-                  border: Border.all(width: 0.2),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Text(
-                  "SIM C",
-                  textAlign: TextAlign.center,
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
     );
   }
+}

@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sepedaku/components/color.dart';
 import 'package:sepedaku/components/locale/locale_keys.g.dart';
 import 'package:sepedaku/screens/dashboard/components/rental_in_progress.dart';
@@ -24,6 +26,10 @@ class _BodyState extends State<Body> {
   late PageController _pageController;
   int _currentPage = 0;
   late Timer _timer;
+  final user = FirebaseAuth.instance.currentUser;
+  late FirebaseFirestore _firestore;
+  late CollectionReference _usersCollection;
+  late String userName;
 
   @override
   void initState() {
@@ -42,6 +48,21 @@ class _BodyState extends State<Body> {
         curve: Curves.easeIn,
       );
     });
+    userName = '...';
+    _firestore = FirebaseFirestore.instance;
+    _usersCollection = _firestore.collection('users');
+    _fetchUserData();
+  }
+
+  Future<void> _fetchUserData() async {
+    try {
+      DocumentSnapshot userData = await _usersCollection.doc(user!.uid).get();
+      setState(() {
+        userName = userData['username'];
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -82,7 +103,7 @@ class _BodyState extends State<Body> {
                         fontWeight: FontWeight.w200),
                   ).tr(),
                   Text(
-                    'Edward!',
+                    userName + ' !',
                     style: GoogleFonts.poppins(
                         fontSize: 28,
                         color: Colors.white,

@@ -1,6 +1,8 @@
 import 'package:camera/camera.dart';
 import 'package:provider/provider.dart';
+import 'package:sepedaku/provider/motorProvider.dart';
 import 'package:sepedaku/provider/simProvider.dart';
+import 'package:sepedaku/provider/transactionProvider.dart';
 import 'package:sepedaku/widget_tree.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
@@ -25,6 +27,8 @@ Future<void> main() async {
       path: 'assets/translations',
       child: MultiProvider(providers: [
         ChangeNotifierProvider(create: (_) => SimProvider()),
+        ChangeNotifierProvider(create: (_) => MotorProvider()),
+        ChangeNotifierProvider(create: (_) => TransactionProvider()),
       ], child: MyApp()),
     ),
   );
